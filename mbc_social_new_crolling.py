@@ -190,11 +190,8 @@ def crolling_start(sheet_title, file_name):
 
     list = crap_content()
 
-    print("######################## 리스트 내역 출력 ##############################")
-    print(list)
     display.stop()
 
-    print("######################## 리스트 내역 엑셀화 ##############################")
 
     setting_xls(sheet_title, file_name, list)
 

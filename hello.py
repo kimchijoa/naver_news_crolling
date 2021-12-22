@@ -25,6 +25,7 @@ def hello_social():
 
     mbc.crolling_start(sheet_title, file_name)
     time.sleep(5)
+    
     mbc.send_mail("today22motion@gmail.com","zlxl7707@naver.com", file_name)
     
     return "Test End"
