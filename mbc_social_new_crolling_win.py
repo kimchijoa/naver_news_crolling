@@ -18,18 +18,21 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
+import threading
+from time import process_time, sleep
+import signal
 
 
 #드라이버 객체 반환
 def setting_driver():
-    chromedriver_autoinstaller.install()
-    print("---chromedriver_auto install done")
+    #chromedriver_autoinstaller.install()
+    #print("---chromedriver_auto install done")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('window-size=1920,1400')
     #chrome_options.add_argument("--single-process")
     #chrome_options.add_argument("--disable-dev-shm-usage")
-    driver = webdriver.Chrome(chrome_options=chrome_options)
+    driver = webdriver.Chrome("chromedriver",chrome_options=chrome_options)
     print("---chromedriver import")
     driver.set_window_position(0, 0)
     driver.set_window_size(1920, 1080)
@@ -64,6 +67,7 @@ def write_xls(sheet_title, file_name, tab_name, list):
     # 시트 이름으로 불러오기
     load_sht = load_wb[sheet_title]
     print("---엑셀화 중...")
+    feel_list = ["E","F","G","H","I"]
     for i in range(len(list)):
         #print("현재 엑셀 rows 현황 : " + str(load_sht.max_row))
         now_sheet_row = load_sht.max_row
@@ -71,11 +75,16 @@ def write_xls(sheet_title, file_name, tab_name, list):
         load_sht["B" + str(now_sheet_row+1)] = list[i]['title']
         load_sht["C" + str(now_sheet_row+1)] = list[i]['current_url']
         load_sht["D" + str(now_sheet_row+1)] = list[i]['e_content']
-        load_sht["E" + str(now_sheet_row+1)] = list[i]['feel'][0]
-        load_sht["F" + str(now_sheet_row+1)] = list[i]['feel'][1]
-        load_sht["G" + str(now_sheet_row+1)] = list[i]['feel'][2]
-        load_sht["H" + str(now_sheet_row+1)] = list[i]['feel'][3]
-        load_sht["I" + str(now_sheet_row+1)] = list[i]['feel'][4]
+
+        for j in range(5):
+            if list[i]['feel'][j] == "":
+                list[i]['feel'][j] = 0
+            else:
+                load_sht[str(feel_list[j]) + str(now_sheet_row+1)] = list[i]['feel'][j]
+                # load_sht["F" + str(now_sheet_row+1)] = list[i]['feel'][1]
+                # load_sht["G" + str(now_sheet_row+1)] = list[i]['feel'][2]
+                # load_sht["H" + str(now_sheet_row+1)] = list[i]['feel'][3]
+                # load_sht["I" + str(now_sheet_row+1)] = list[i]['feel'][4]
 
     load_wb.save(file_name)
     print("##내용 저장 완료")
@@ -85,6 +94,7 @@ def write_xls(sheet_title, file_name, tab_name, list):
 #현재 선택한 좌측 메뉴의 끝 페이지까지 이동한다.
 def move_end_content(driver, social_tab, social_tab_under):
     #driver = setting_driver()
+    time.sleep(2)
     print("---Open Page")
     driver.get("https://news.naver.com/")
     time.sleep(2)
@@ -116,12 +126,12 @@ def move_end_content(driver, social_tab, social_tab_under):
     time.sleep(2)
 
     #테스트 코드 2021-12-20
-    # driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
-    # area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
-    # day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
-    # print(day_child[2].text)
-    # day_child[2].click()
-    # time.sleep(2)
+    driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
+    area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
+    day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
+    print(day_child[2].text)
+    day_child[2].click()
+    time.sleep(2)
 
     while(1):
         test_dp = ""
@@ -172,6 +182,8 @@ def move_end_content(driver, social_tab, social_tab_under):
 
         time.sleep(3)
 
+
+
 #===================================================================================================================================================================
 #현재 선택한 좌측 메뉴의 끝 페이지까지 이동한다.
 def move_prve_content(driver, sheet_title, file_name, social_tab_under):
@@ -179,23 +191,24 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
     #여기에 Crop Content가 나올것임
     time.sleep(2)
 
-    # sheet_title = "social_news"
-    # file_name = "naver_news_social_nomarl_content_" + date.today().isoformat() + ".xlsx"
-    # create_xls(sheet_title, file_name)
-
     while(1):
         time.sleep(2)
         driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
+        time.sleep(2)
         #페이지 버튼 클래스 네임에 특수문자가 있어서 추적이 안된다.
         #페이지 버튼을 포함하는 객체의 XPath를 이용해 자식요소인 페이지 버튼들을 추적함
         area_pg_btn = driver.find_element(By.XPATH, "// *[ @ id = 'main_content'] / div[3]")
         btn_child = area_pg_btn.find_elements(By.XPATH, ".//*")
         now_page = driver.current_url.split("=")[-1]
-        print("---현재 페이지 : " + str(now_page))
+        print("=== [" + str(social_tab_under) + "]" + "현재 페이지 : " + str(now_page) + " PAGE ===")
         #현재 페이지가 1이라면 페이지 이동 자체를 멈춘다.
-        page_dictionary = crop_content(driver)
-        write_xls(sheet_title, file_name, social_tab_under, page_dictionary)
-
+        #page_dictionary = crop_content(driver, social_tab_under)
+        #write_xls(sheet_title, file_name, social_tab_under, page_dictionary)
+        # if str(now_page) == "1":
+        #     print("드라이버 종료")
+        #     driver.quit()
+        #     break
+        
         for b in range(len(news_list)):
             print(news_list[b])
 
@@ -204,18 +217,20 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
             break
 
         #현재 페이지-1 페이지로 이동한다.
+        for a in range(len(btn_child)):
+            print("[" + str(social_tab_under) + "]" + "[" + str(a) + "] : " + btn_child[a].text)
         for i in range(len(btn_child)):
             #print("페이지 검사중 : " + btn_child[i].text)
             if btn_child[i].text == str(int(now_page)-1):
-                print(btn_child[i].text + "페이지로 이동합니다")
+                print(btn_child[i].text + "페이지로 이동")
                 btn_child[i].send_keys(Keys.ENTER)
                 break
             #현재 페이지-1 페이지로 이동하다가 더이상 갈수있는 페이지가 없을때 이전버튼을 선택한다.
+            
             if btn_child[1].text == str(now_page) and btn_child[0].text =="이전":
-                print("##페이지 한단락을 이동합니다")
+                print( str(social_tab_under) + " 페이지 한단락을 이동합니다")
                 btn_child[0].send_keys(Keys.ENTER)
                 break
-
 
         time.sleep(3)
 
@@ -223,7 +238,7 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
 
 #현재 활성화된 페이지의 뉴스 리스트 정보를 반환한다.
 #한번 실행시 마다 뉴스 한개의 정보를 담은 딕셔너리를 반환함
-def crop_content(driver):
+def crop_content(driver, social_tab_under):
     #driver = setting_driver()
     new_list = []
     news_dictionary = {}
@@ -232,7 +247,7 @@ def crop_content(driver):
     time.sleep(2)
     #driver.execute_script("window.scrollTo(0, (document.body.scrollHeight/2));")
     news_list = driver.find_elements(By.CLASS_NAME,"photo")
-    print("뉴스 리스트 출력 : " + str(len(news_list)))
+    print("[" + str(social_tab_under) + "]" + "뉴스 리스트 출력 : " + str(len(news_list)))
     time.sleep(2)
 
     for i in range(len(news_list)):
@@ -244,10 +259,10 @@ def crop_content(driver):
         driver.switch_to.window(driver.window_handles[-1])
         time.sleep(1)
         news_dictionary = {}
-        print("=================================  " + str(i) + "  =========================================")
+        #print("=================================  " + str(i) + "  =========================================")
         try:
             news_title = driver.find_element(By.CLASS_NAME,"tts_head").text
-            print("----뉴스 제목 : " + news_title)
+            #print("----뉴스 제목 : " + news_title)
             # print("----뉴스 링크 : " + driver.current_url)
             e_content = driver.find_element(By.XPATH, "//*[@id='articleBodyContents']").text
             # print("----뉴스 내용" + e_content)
@@ -305,10 +320,10 @@ def send_mail(from_mail, to_mail, attach):
     # 제목, 본문 작성
     msg = MIMEMultipart()
     today = datetime.today().strftime("%Y-%m-%d")
-    msg['Subject'] = Header(s=str(today) + '뉴스 분석데이터 발송합니다.', charset='utf-8')
+    msg['Subject'] = Header(s=(date.today() - timedelta(1)).isoformat() + '뉴스 분석데이터 발송.', charset='utf-8')
     msg['From'] = from_mail
     msg['To'] = to_mail
-    body = MIMEText(str(today) + '뉴스 분석데이터 발송합니다. 문제가 있을경우 개인연락 부탁드립니다.', _charset='utf-8')
+    body = MIMEText((date.today() - timedelta(1)).isoformat() + '뉴스 분석데이터 발송합니다. 문제가 있을경우 개인연락 부탁드립니다.', _charset='utf-8')
     msg.attach(body)
     attach_file = attach
     print("메일 발송중 3")
@@ -323,21 +338,22 @@ def send_mail(from_mail, to_mail, attach):
     s.quit()
     print("---send email with attach_file 'To. '" + to_mail + "'")
 
+
+
 def crolling_start(sheet_title, file_name, social_tab, social_tab_under):
     print("##Setting Display")
     #display = Display(visible=0, size=(1920, 1000))
     #display.start()
-
-    print("##Crolling_Start")
-    dirver = setting_driver()
+    driver = setting_driver()
     #특정 뉴스 탭에 들어가 맨 끝페이지 까지 이동함
-    move_end_content(dirver, social_tab, social_tab_under)
+    move_end_content(driver, social_tab, social_tab_under)
     #특정 뉴스 탭의 마지막에 도착하면 앞으로 한 페이지씩 이동하며 뉴스 정보를 스크랩함
     print("첫번째 페이지까지 자동 스크랩을 실행합니다.")
-    move_prve_content(dirver, sheet_title, file_name, social_tab_under)
+    move_prve_content(driver, sheet_title, file_name, social_tab_under)
     #print(list)
     #display.stop()
-
+    driver.quit()
+    print("드라이버를 종료합니다.")
     #print("######################## 리스트 내역 엑셀화 ##############################")
 
     

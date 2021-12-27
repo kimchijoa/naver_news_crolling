@@ -9,7 +9,12 @@ import threading
 import pandas as pd
 import schedule
 import os
-total_news_data = "total_news_data" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
+import signal
+import chromedriver_autoinstaller
+
+
+total_news_data = "total_news_data_" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
+total_time  = "기다리는 중..."
 
 def go_schedule_crolling():
     sheet_title = "social_news"
@@ -33,11 +38,20 @@ def go_schedule_crolling():
     th2 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name02, social_tab[0], social_tab_under[1]))
     th3 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name03, social_tab[1], social_tab_under[2]))
     th4 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name04, social_tab[2], social_tab_under[3]))
+    time.sleep(5)
     th1.start() # 쓰레드 시작
+    time.sleep(15)
     th2.start() # 쓰레드 시작
+    th2.join()
+    print("== 쓰레드02  종료 ==")
+    time.sleep(15)
     th3.start() # 쓰레드 시작
+    th3.join()
+    print("== 쓰레드03  종료 ==")
+    time.sleep(15)
     th4.start() # 쓰레드 시작
-
+    th4.join()
+    print("== 쓰레드04  종료 ==")
     th1.join() # 쓰레드 끝날때까지 기다리는 역할
 
     end = time.time()
@@ -54,21 +68,29 @@ def go_schedule_crolling():
     combined = pd.concat(frames)
 
     #파일저장
-    total_news_data = "total_news_data" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
+    total_news_data = "total_news_data_" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
     combined.to_excel(total_news_data, header=False, index=False)
     
     #메일 발송은 time 2초 정도 주기
     time.sleep(2)
-    th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", total_news_data))
+    th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
+    #th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","zwydklxl7707@naver.com", total_news_data))
     th5.start() # 쓰레드 시작
     th5.join() # 쓰레드 끝날때까지 기다리는 역할
     print("메일을 발송하였습니다.")
     #mbc.send_mail("today22motion@gmail.com","zlxl7707@naver.com",total_news_data)
 
-schedule.every().day.at("23:30").do(go_schedule_crolling)
+schedule.every().day.at("23:40").do(go_schedule_crolling)
 
-while 1:
-    schedule.run_pending()
-    time.sleep(10)
-    os.system("clear")
-    print("======== waitng for crolling... It will start 23:30 ========")
+if __name__ == "__main__":
+    go_schedule_crolling()
+
+
+
+
+# while 1:
+#     schedule.run_pending()
+#     time.sleep(10)
+#     os.system("clear")
+#     print("======== waitng for crolling... It will start 23:30 ========")
+    
