@@ -21,6 +21,7 @@ from email import encoders
 import threading
 from time import process_time, sleep
 import signal
+from pyvirtualdisplay import Display
 
 
 #드라이버 객체 반환
@@ -177,7 +178,7 @@ def move_end_content(driver, social_tab, social_tab_under):
                 btn_child[i].click()
                 print("다음페이지로 이동합니다.")
 
-        time.sleep(3)
+        time.sleep(2)
 
 
 
@@ -244,7 +245,7 @@ def crop_content(driver, social_tab_under):
     time.sleep(2)
     #driver.execute_script("window.scrollTo(0, (document.body.scrollHeight/2));")
     news_list = driver.find_elements(By.CLASS_NAME,"photo")
-    print("[" + str(social_tab_under) + "]" + "뉴스 리스트 출력 : " + str(len(news_list)))
+    #print("[" + str(social_tab_under) + "]" + "뉴스 리스트 출력 : " + str(len(news_list)))
     time.sleep(2)
 
     for i in range(len(news_list)):
@@ -298,12 +299,6 @@ def crop_content(driver, social_tab_under):
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
             time.sleep(2)
-
-
-        #print(news_dictionary)
-
-        # for a in range(len(new_list)):
-        #     print(new_list[a])
         
     return new_list
 
@@ -339,8 +334,8 @@ def send_mail(from_mail, to_mail, attach):
 
 def crolling_start(sheet_title, file_name, social_tab, social_tab_under):
     print("##Setting Display")
-    #display = Display(visible=0, size=(1920, 1000))
-    #display.start()
+    display = Display(visible=0, size=(1920, 1000))
+    display.start()
     driver = setting_driver()
     #특정 뉴스 탭에 들어가 맨 끝페이지 까지 이동함
     move_end_content(driver, social_tab, social_tab_under)
@@ -348,7 +343,7 @@ def crolling_start(sheet_title, file_name, social_tab, social_tab_under):
     print("첫번째 페이지까지 자동 스크랩을 실행합니다.")
     move_prve_content(driver, sheet_title, file_name, social_tab_under)
     #print(list)
-    #display.stop()
+    display.stop()
     driver.quit()
     print("드라이버를 종료합니다.")
     #print("######################## 리스트 내역 엑셀화 ##############################")
