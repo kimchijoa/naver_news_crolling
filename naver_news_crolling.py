@@ -1,5 +1,6 @@
 from sys import hash_info
 import time
+from chromedriver_autoinstaller.utils import print_chromedriver_path
 from selenium import webdriver
 #from pyvirtualdisplay import Display
 from selenium.webdriver import ActionChains
@@ -19,19 +20,21 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import shutil
+#==============================
+import xls_controll as xls
 
 
 #드라이버 객체 반환
 def setting_driver():
     chromedriver_autoinstaller.install()
-    print("---chromedriver_auto install done")
+    #print("---chromedriver_auto install done")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('window-size=1920,1400')
     #chrome_options.add_argument("--single-process")
     #chrome_options.add_argument("--disable-dev-shm-usage")
     driver = webdriver.Chrome(chrome_options=chrome_options)
-    print("---chromedriver import")
+    #print("---chromedriver import")
     driver.set_window_position(0, 0)
     driver.set_window_size(1920, 1080)
     driver.implicitly_wait(10)
@@ -69,14 +72,13 @@ def write_xls(sheet_title, file_name, tab_name, list):
 
 
 #====================================================================================================================================================================
-def move_end_content_return_total(driver, social_tab, social_tab_under):
-    #driver = setting_driver()
+#각 카테고리별 최대 페이지 수를 리턴한다. ex) 사회 일반 카테고리는 XXXX-XX-XX일자에 275페이지가 기록되었다.
+def move_end_content_return_total(driver, social_tab, social_tab_under, yester_day_opt):
+    total_list_len = ""
     print("---Open Page")
     driver.get("https://news.naver.com/")
     time.sleep(2)
-    print(social_tab)
-    print(social_tab_under)
-
+    print('[' + social_tab + ']'  + ' [' + social_tab_under + '] ' + '메뉴를 탐색합니다.')
     driver.find_element(By.XPATH,"/html/body/section/header/div[2]/div/div/div[1]/div/div/ul/li[4]").click()
     time.sleep(2)
     #메인 페이지 상위 메뉴중 사회메뉴를 클릭한다.
@@ -85,79 +87,72 @@ def move_end_content_return_total(driver, social_tab, social_tab_under):
 
     for i in range(len(tab_child)):
         if tab_child[i].text == social_tab:
-            print("---상위 메뉴 이동 : " + tab_child[i].text)
             tab_child[i].click()
             break
-    # driver.find_element(By.XPATH, "/html/body/section/header/div[2]/div/div/div[1]/div/div/ul/li[4]/a/span").click()
+
     time.sleep(2)
 
     social_tab_under_list = driver.find_element(By.XPATH, "//*[@id='snb']/ul")
     tab_child = social_tab_under_list.find_elements(By.XPATH, ".//*")
     for i in range(len(tab_child)):
         if tab_child[i].text == social_tab_under:
-            print("----좌측 메뉴 이동 : " + tab_child[i].text)
+            #print("----좌측 메뉴 이동 : " + tab_child[i].text)
             tab_child[i].click()
             break
-    #driver.find_element(By.XPATH, "//*[@id='snb']/ul/li[10]/a").click()
+
     time.sleep(2)
 
-    #테스트 코드 2021-12-20
-    # driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
-    # area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
-    # day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
-    # print(day_child[2].text)
-    # day_child[2].click()
-    # time.sleep(2)
+    if yester_day_opt == 1:
+        #12시 이후에만 실행할 코드로 이전 날짜를 클릭하게 하는 함수
+        print("이전 날의 데이터를 조회합니다.")
+        driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
+        area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
+        day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
+        print(day_child[2].text)
+        day_child[2].click()
+        time.sleep(2)
+
 
     while(1):
-        test_dp = ""
-
         driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
         #페이지 버튼 클래스 네임에 특수문자가 있어서 추적이 안된다.
         #페이지 버튼을 포함하는 객체의 XPath를 이용해 자식요소인 페이지 버튼들을 추적함
         area_pg_btn = driver.find_element(By.XPATH,"// *[ @ id = 'main_content'] / div[3]")
         btn_child = area_pg_btn.find_elements(By.XPATH, ".//*")
         #print(btn_child)
-        print("현재 페이지 수 : " + str(len(btn_child)))
+
+        #print("현재 페이지 수 : " + str(len(btn_child)))
         # for i in range(len(btn_child)):
         #     print(str(i) + "번째 : " + btn_child[i].text)
 
         if len(btn_child) < 11 and btn_child[len(btn_child)-1].text != "다음":
             try:
+                total_list_len = str(btn_child[len(btn_child)-1].text)
                 print("마지막 페이지 : " + str(btn_child[len(btn_child)-1].text))
                 btn_child[len(btn_child)-1].click()
-                print("마지막 페이지입니다.")
+                #마지막 페이지
                 break
             except:
                 break
 
         if len(btn_child) < 12 and btn_child[0].text == "이전":
             try:
+                total_list_len = str(btn_child[len(btn_child)-1].text)
                 print("마지막 페이지 : " + str(btn_child[len(btn_child)-1].text))
                 btn_child[len(btn_child)-1].click()
-                print("마지막 페이지입니다.")
+                #마지막 페이지
                 break
             except:
                 break
 
-        # 임시 테스트용 2021-12-20
-        # for i in range(len(btn_child)):
-        #     if btn_child[i].text == "49":
-        #         print("임시테스트 페이지로 이동합니다.")
-        #         btn_child[i].click()
-        #         test_dp = "123"
-        #         break
-        # if test_dp == "123":
-        #     break
-
         for i in range(len(btn_child)):
-            #print(btn_child[i].text)
+            #다음 페이지로 이동
             if btn_child[i].text == "다음":
                 btn_child[i].click()
-                print("다음페이지로 이동합니다.")
 
-        time.sleep(3)
+        time.sleep(2)
 
+    return total_list_len
 
 #===================================================================================================================================================================
 #현재 선택한 좌측 메뉴의 끝 페이지까지 이동한다.
@@ -249,6 +244,7 @@ def move_end_content(driver, social_tab, social_tab_under):
                 print("다음페이지로 이동합니다.")
 
         time.sleep(3)
+
 
 #===================================================================================================================================================================
 #현재 선택한 좌측 메뉴의 끝 페이지까지 이동한다.
