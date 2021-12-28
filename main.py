@@ -19,7 +19,7 @@ def go_schedule_crolling():
     file_name03 = "naver_news_economy_normal_content_" + date.today().isoformat() + ".xlsx"
     file_name04 = "naver_news_politics_normal_content_" + date.today().isoformat() + ".xlsx"
     #social_tab, social_tab_under
-    social_tab = ["사회","경제","정치"]
+    social_tab = ["사회","사회","경제","정치"]
     social_tab_under = ["사회 일반","사건사고","경제 일반","정치일반"]
 
     begin = time.time()
@@ -27,17 +27,22 @@ def go_schedule_crolling():
     mbc.create_xls(sheet_title, file_name02)
     mbc.create_xls(sheet_title, file_name03)
     mbc.create_xls(sheet_title, file_name04)
-    #mbc.crolling_start(sheet_title, file_name)
-
+    
+    time.sleep(5)
     th1 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name01, social_tab[0], social_tab_under[0]))
-    th2 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name02, social_tab[0], social_tab_under[1]))
-    th3 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name03, social_tab[1], social_tab_under[2]))
-    th4 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name04, social_tab[2], social_tab_under[3]))
+    th2 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name02, social_tab[1], social_tab_under[1]))
+    th3 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name03, social_tab[2], social_tab_under[2]))
+    th4 = threading.Thread(target=mbc_social_new_crolling_win.crolling_start, args=(sheet_title, file_name04, social_tab[3], social_tab_under[3]))
     th1.start() # 쓰레드 시작
+    time.sleep(5)
     th2.start() # 쓰레드 시작
+    th2.join()
+    time.sleep(5)
     th3.start() # 쓰레드 시작
+    th3.join()
+    time.sleep(5)
     th4.start() # 쓰레드 시작
-
+    th4.join()
     th1.join() # 쓰레드 끝날때까지 기다리는 역할
 
     end = time.time()
@@ -67,8 +72,12 @@ def go_schedule_crolling():
 
 schedule.every().day.at("23:30").do(go_schedule_crolling)
 
-while 1:
-    schedule.run_pending()
-    time.sleep(10)
-    os.system("clear")
-    print("======== waitng for crolling... It will start 23:30 ========")
+if __name__ == "__main__":
+    go_schedule_crolling()
+
+
+# while 1:
+#     schedule.run_pending()
+#     time.sleep(10)
+#     os.system("clear")
+#     print("======== waitng for crolling... It will start 23:30 ========")
