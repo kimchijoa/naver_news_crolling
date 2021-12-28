@@ -63,7 +63,7 @@ def write_xls(sheet_title, file_name, tab_name, list):
     load_wb = openpyxl.load_workbook(file_name, data_only=True)
     # 시트 이름으로 불러오기
     load_sht = load_wb[sheet_title]
-    print("---엑셀화 중...")
+    feel_list = ["E","F","G","H","I"]
     for i in range(len(list)):
         #print("현재 엑셀 rows 현황 : " + str(load_sht.max_row))
         now_sheet_row = load_sht.max_row
@@ -71,14 +71,21 @@ def write_xls(sheet_title, file_name, tab_name, list):
         load_sht["B" + str(now_sheet_row+1)] = list[i]['title']
         load_sht["C" + str(now_sheet_row+1)] = list[i]['current_url']
         load_sht["D" + str(now_sheet_row+1)] = list[i]['e_content']
-        load_sht["E" + str(now_sheet_row+1)] = list[i]['feel'][0]
-        load_sht["F" + str(now_sheet_row+1)] = list[i]['feel'][1]
-        load_sht["G" + str(now_sheet_row+1)] = list[i]['feel'][2]
-        load_sht["H" + str(now_sheet_row+1)] = list[i]['feel'][3]
-        load_sht["I" + str(now_sheet_row+1)] = list[i]['feel'][4]
+
+        for j in range(5):
+            if list[i]['feel'][j] == "":
+                list[i]['feel'][j] = 0
+            else:
+                load_sht[str(feel_list[j]) + str(now_sheet_row+1)] = list[i]['feel'][j]
+
+        # load_sht["E" + str(now_sheet_row+1)] = list[i]['feel'][0]
+        # load_sht["F" + str(now_sheet_row+1)] = list[i]['feel'][1]
+        # load_sht["G" + str(now_sheet_row+1)] = list[i]['feel'][2]
+        # load_sht["H" + str(now_sheet_row+1)] = list[i]['feel'][3]
+        # load_sht["I" + str(now_sheet_row+1)] = list[i]['feel'][4]
 
     load_wb.save(file_name)
-    print("##내용 저장 완료")
+    #print("##내용 저장 완료")
 
 
 #===================================================================================================================================================================
@@ -191,7 +198,7 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
         area_pg_btn = driver.find_element(By.XPATH, "// *[ @ id = 'main_content'] / div[3]")
         btn_child = area_pg_btn.find_elements(By.XPATH, ".//*")
         now_page = driver.current_url.split("=")[-1]
-        print("---현재 페이지 : " + str(now_page))
+        print("=== [" + str(social_tab_under) + "]" + "현재 페이지 : " + str(now_page) + " PAGE ===")
         #현재 페이지가 1이라면 페이지 이동 자체를 멈춘다.
         page_dictionary = crop_content(driver)
         write_xls(sheet_title, file_name, social_tab_under, page_dictionary)
@@ -204,6 +211,11 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
             break
 
         #현재 페이지-1 페이지로 이동한다.
+
+        #페이지 출력 테스트
+        for a in range(len(btn_child)):
+            print("[" + str(social_tab_under) + "]" + "[" + str(a) + "] : " + btn_child[a].text)
+
         for i in range(len(btn_child)):
             #print("페이지 검사중 : " + btn_child[i].text)
             if btn_child[i].text == str(int(now_page)-1):
@@ -224,13 +236,10 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
 #현재 활성화된 페이지의 뉴스 리스트 정보를 반환한다.
 #한번 실행시 마다 뉴스 한개의 정보를 담은 딕셔너리를 반환함
 def crop_content(driver):
-    #driver = setting_driver()
     new_list = []
     news_dictionary = {}
     print("---Crop Start")
-    #driver.get("https://news.naver.com/main/list.naver?mode=LS2D&mid=shm&sid2=249&sid1=102&date=20211218&page=3")
     time.sleep(2)
-    #driver.execute_script("window.scrollTo(0, (document.body.scrollHeight/2));")
     news_list = driver.find_elements(By.CLASS_NAME,"photo")
     print("뉴스 리스트 출력 : " + str(len(news_list)))
     time.sleep(2)
@@ -244,10 +253,10 @@ def crop_content(driver):
         driver.switch_to.window(driver.window_handles[-1])
         time.sleep(1)
         news_dictionary = {}
-        print("=================================  " + str(i) + "  =========================================")
+        #print("=================================  " + str(i) + "  =========================================")
         try:
             news_title = driver.find_element(By.CLASS_NAME,"tts_head").text
-            print("----뉴스 제목 : " + news_title)
+            #print("----뉴스 제목 : " + news_title)
             # print("----뉴스 링크 : " + driver.current_url)
             e_content = driver.find_element(By.XPATH, "//*[@id='articleBodyContents']").text
             # print("----뉴스 내용" + e_content)
@@ -305,10 +314,10 @@ def send_mail(from_mail, to_mail, attach):
     # 제목, 본문 작성
     msg = MIMEMultipart()
     today = datetime.today().strftime("%Y-%m-%d")
-    msg['Subject'] = Header(s=str(today) + '뉴스 분석데이터 발송합니다.', charset='utf-8')
+    msg['Subject'] = Header(s=str(today) + ' 뉴스 분석데이터 발송', charset='utf-8')
     msg['From'] = from_mail
     msg['To'] = to_mail
-    body = MIMEText(str(today) + '뉴스 분석데이터 발송합니다. 문제가 있을경우 개인연락 부탁드립니다.', _charset='utf-8')
+    body = MIMEText('AWS EC2 서버를 통해 크롤링한 정보인 ' + str(today) + ' 네이버 뉴스 분석데이터 발송합니다. 문제가 있을경우 개인연락 부탁드립니다.', _charset='utf-8')
     msg.attach(body)
     attach_file = attach
     print("메일 발송중 3")
