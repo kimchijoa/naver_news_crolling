@@ -1,4 +1,4 @@
-from logging import Manager
+from logging import Manager, root
 from datetime import date, timedelta, datetime
 import time
 import datetime
@@ -15,7 +15,8 @@ total_news_data = "total_news_data" +(date.today() - timedelta(1)).isoformat() +
 total_time = "will start this process"
 
 #생성할 폴더 이름, 엑셀시트, 엑셀파일명 지정
-folder_name = "news_data_" +(date.today() - timedelta(1)).isoformat() + "/"
+root_folder_name = "news_data/"
+folder_name = root_folder_name + "news_data_" +(date.today() - timedelta(1)).isoformat() + "/"
 sheet_title = "social_news"
 file_name_list = ["naver_news_social_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
 "naver_news_social_accident_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
@@ -100,7 +101,7 @@ social_tab_under = ["사회 일반","사건사고","경제 일반","정치일반
 
 
 if __name__ == "__main__": 
-    xls_c.create_folder(folder_name, sheet_title, file_name_list)
+    xls_c.create_folder(root_folder_name, folder_name, sheet_title, file_name_list)
     #go_schedule_crolling()
 
 # while 1:

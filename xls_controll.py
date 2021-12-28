@@ -41,8 +41,14 @@ def create_xls(sheet_title, file_name):
     print("엑셀파일 생성")
 
 
-def create_folder(folder_name, sheet_title, file_name_list):
+def create_folder(root_folder_name, folder_name, sheet_title, file_name_list):
 
+    try:
+        if not os.path.exists(root_folder_name):
+            os.makedirs(root_folder_name)
+    except OSError:
+        print("root 폴더를 생성할수 없습니다.")
+        
     try:
         if not os.path.exists(folder_name):
             #shutil.rmtree(folder_name)
