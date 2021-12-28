@@ -25,8 +25,8 @@ import signal
 
 #드라이버 객체 반환
 def setting_driver():
-    #chromedriver_autoinstaller.install()
-    #print("---chromedriver_auto install done")
+    chromedriver_autoinstaller.install()
+    print("---chromedriver_auto install done")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('window-size=1920,1400')
