@@ -124,12 +124,12 @@ def move_end_content(driver, social_tab, social_tab_under):
     time.sleep(2)
 
     #테스트 코드 2021-12-20
-    driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
-    area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
-    day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
-    print(day_child[2].text)
-    day_child[2].click()
-    time.sleep(2)
+    # driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
+    # area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
+    # day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
+    # print(day_child[2].text)
+    # day_child[2].click()
+    # time.sleep(2)
 
     while(1):
         test_dp = ""
@@ -200,12 +200,8 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
         now_page = driver.current_url.split("=")[-1]
         print("=== [" + str(social_tab_under) + "]" + "현재 페이지 : " + str(now_page) + " PAGE ===")
         #현재 페이지가 1이라면 페이지 이동 자체를 멈춘다.
-        #page_dictionary = crop_content(driver, social_tab_under)
-        #write_xls(sheet_title, file_name, social_tab_under, page_dictionary)
-        # if str(now_page) == "1":
-        #     print("드라이버 종료")
-        #     driver.quit()
-        #     break
+        page_dictionary = crop_content(driver, social_tab_under)
+        write_xls(sheet_title, file_name, social_tab_under, page_dictionary)
         
         for b in range(len(news_list)):
             print(news_list[b])
