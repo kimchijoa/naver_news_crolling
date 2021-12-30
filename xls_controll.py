@@ -20,6 +20,7 @@ from email.mime.base import MIMEBase
 from email import encoders
 import shutil
 
+#===============================================================================================================================
 def create_xls(sheet_title, file_name):
     wb = openpyxl.Workbook()
     sheet1 = wb.active
@@ -54,7 +55,7 @@ def create_folder(root_folder_name, folder_name, sheet_title, file_name_list):
             #shutil.rmtree(folder_name)
             os.makedirs(folder_name)
             for i in range(len(file_name_list)):
-                create_xls(sheet_title, folder_name + file_name_list[i])
+                create_xls(sheet_title, file_name_list[i])
             print("폴더가 생성되었습니다.")
 
         elif os.path.exists(folder_name):
@@ -62,14 +63,14 @@ def create_folder(root_folder_name, folder_name, sheet_title, file_name_list):
             shutil.rmtree(folder_name)
             os.makedirs(folder_name)
             for i in range(len(file_name_list)):
-                create_xls(sheet_title, folder_name + file_name_list[i])
+                create_xls(sheet_title, file_name_list[i])
             print("폴더가 생성되었습니다.")
 
     except OSError:
         print("Error: 폴더를 생성할수 없습니다.")
 
 
-#엑셀 파일 쓰기
+#엑셀 파일 쓰기 ====================================================================================================
 def write_xls(sheet_title, file_name, tab_name, value_list):
     load_wb = openpyxl.load_workbook(file_name, data_only=True)
     # 시트 이름으로 불러오기
@@ -89,4 +90,31 @@ def write_xls(sheet_title, file_name, tab_name, value_list):
             else:
                 load_sht[str(feel_list[j]) + str(now_sheet_row+1)] = value_list[i]['feel'][j]
 
+    load_wb.save(file_name)
+
+#=======================================================================================
+#그래프 속도 측정용 엑셀 파일 함수
+def create_graph_info_xls(sheet_title, file_name):
+    wb = openpyxl.Workbook()
+    sheet1 = wb.active
+    sheet1.title = sheet_title
+    new_file_name = file_name
+
+    sheet1["A1"] = "Category"
+    sheet1["B1"] = "list_count"
+    sheet1["C1"] = "cost_time"
+
+    wb.save(new_file_name)
+    print("엑셀파일 생성")
+
+#그래프 속도 측정용 엑셀파일 쓰기 ====================================================================================================
+def write_graph_info_xls(sheet_title, file_name, tab_name, list_count, cost_value):
+    load_wb = openpyxl.load_workbook(file_name, data_only=True)
+    # 시트 이름으로 불러오기
+    load_sht = load_wb[sheet_title]
+
+    now_sheet_row = load_sht.max_row
+    load_sht["A" + str(now_sheet_row+1)] = tab_name
+    load_sht["B" + str(now_sheet_row+1)] = list_count
+    load_sht["C" + str(now_sheet_row+1)] = cost_value
     load_wb.save(file_name)

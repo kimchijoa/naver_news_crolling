@@ -8,8 +8,7 @@ from selenium.webdriver.common.by import By
 import chromedriver_autoinstaller
 from selenium.webdriver.common.keys import Keys
 import openpyxl
-from datetime import datetime
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 #===================== 메일 발송 패키지
 import os
 import smtplib
@@ -161,8 +160,8 @@ def move_end_content(driver, social_tab, social_tab_under):
     print("---Open Page")
     driver.get("https://news.naver.com/")
     time.sleep(2)
-    print(social_tab)
-    print(social_tab_under)
+    #print(social_tab)
+    #print(social_tab_under)
 
     driver.find_element(By.XPATH,"/html/body/section/header/div[2]/div/div/div[1]/div/div/ul/li[4]").click()
     time.sleep(2)
@@ -172,33 +171,31 @@ def move_end_content(driver, social_tab, social_tab_under):
 
     for i in range(len(tab_child)):
         if tab_child[i].text == social_tab:
-            print("---상위 메뉴 이동 : " + tab_child[i].text)
+            print('[' + social_tab + ']'  + ' [' + social_tab_under + '] ' + '메뉴를 탐색합니다.')
             tab_child[i].click()
             break
     # driver.find_element(By.XPATH, "/html/body/section/header/div[2]/div/div/div[1]/div/div/ul/li[4]/a/span").click()
     time.sleep(2)
-
     social_tab_under_list = driver.find_element(By.XPATH, "//*[@id='snb']/ul")
     tab_child = social_tab_under_list.find_elements(By.XPATH, ".//*")
     for i in range(len(tab_child)):
         if tab_child[i].text == social_tab_under:
-            print("----좌측 메뉴 이동 : " + tab_child[i].text)
             tab_child[i].click()
             break
     #driver.find_element(By.XPATH, "//*[@id='snb']/ul/li[10]/a").click()
-    time.sleep(2)
+    
 
     #테스트 코드 2021-12-20
-    # driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
-    # area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
-    # day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
-    # print(day_child[2].text)
-    # day_child[2].click()
-    # time.sleep(2)
+    time.sleep(2)
+    driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
+    area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
+    day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
+    print(day_child[2].text)
+    day_child[2].click()
 
     while(1):
         test_dp = ""
-
+        time.sleep(2)
         driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
         #페이지 버튼 클래스 네임에 특수문자가 있어서 추적이 안된다.
         #페이지 버튼을 포함하는 객체의 XPath를 이용해 자식요소인 페이지 버튼들을 추적함
@@ -206,8 +203,6 @@ def move_end_content(driver, social_tab, social_tab_under):
         btn_child = area_pg_btn.find_elements(By.XPATH, ".//*")
         #print(btn_child)
         print("현재 페이지 수 : " + str(len(btn_child)))
-        # for i in range(len(btn_child)):
-        #     print(str(i) + "번째 : " + btn_child[i].text)
 
         if len(btn_child) < 11 and btn_child[len(btn_child)-1].text != "다음":
             try:
@@ -257,7 +252,7 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
     # file_name = "naver_news_social_nomarl_content_" + date.today().isoformat() + ".xlsx"
     # create_xls(sheet_title, file_name)
 
-    while(1):
+    while(1):    
         time.sleep(2)
         driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
         #페이지 버튼 클래스 네임에 특수문자가 있어서 추적이 안된다.
@@ -267,8 +262,21 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
         now_page = driver.current_url.split("=")[-1]
         print("=== [" + str(social_tab_under) + "]" + "현재 페이지 : " + str(now_page) + " PAGE ===")
         #현재 페이지가 1이라면 페이지 이동 자체를 멈춘다.
-        page_dictionary = crop_content(driver)
+
+        begin = time.time()
+        page_dictionary, now_page_list = crop_content(driver)
+        end = time.time()
+        result = round(end - begin)
+        print("=== [" + str(social_tab_under) + "]" + str(result) + " second ===")
+
         write_xls(sheet_title, file_name, social_tab_under, page_dictionary)
+        
+        graph_sheet_title = "today_crolling_speed"
+        root_folder_name = "news_data/"
+        folder_name = root_folder_name + "news_data_" +(date.today() - timedelta(1)).isoformat() + "/"
+        graph_info_file_name = folder_name + "graph_speed_info_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"
+        xls.write_graph_info_xls(graph_sheet_title, graph_info_file_name, str(social_tab_under), now_page_list, str(result))
+        
 
         for b in range(len(news_list)):
             print(news_list[b])
@@ -280,8 +288,8 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
         #현재 페이지-1 페이지로 이동한다.
 
         #페이지 출력 테스트
-        for a in range(len(btn_child)):
-            print("[" + str(social_tab_under) + "]" + "[" + str(a) + "] : " + btn_child[a].text)
+        # for a in range(len(btn_child)):
+        #     print("[" + str(social_tab_under) + "]" + "[" + str(a) + "] : " + btn_child[a].text)
 
         for i in range(len(btn_child)):
             #print("페이지 검사중 : " + btn_child[i].text)
@@ -354,22 +362,22 @@ def crop_content(driver):
             news_dictionary["feel"] = emotion_list_value
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
-            time.sleep(2)
+            # time.sleep(2)
 
             new_list.append(news_dictionary)
         except:
             print("다른유형의 기사입니다. 해당 기사는 오류로 인해 건너뜁니다.")
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
-            time.sleep(2)
+            # time.sleep(2)
 
-
+        
         #print(news_dictionary)
 
         # for a in range(len(new_list)):
         #     print(new_list[a])
         
-    return new_list
+    return new_list, str(len(news_list))
 
 def send_mail(from_mail, to_mail, attach):
     # 세션생성, 로그인

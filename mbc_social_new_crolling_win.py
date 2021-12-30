@@ -120,15 +120,15 @@ def move_end_content(driver, social_tab, social_tab_under):
             tab_child[i].click()
             break
     #driver.find_element(By.XPATH, "//*[@id='snb']/ul/li[10]/a").click()
-    time.sleep(2)
 
+    time.sleep(3)
     #테스트 코드 2021-12-20
-    # driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
-    # area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
-    # day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
-    # print(day_child[2].text)
-    # day_child[2].click()
-    # time.sleep(2)
+    driver.execute_script("window.scrollTo(0, (document.body.scrollHeight));")
+    area_pg_btn = driver.find_element(By.XPATH, "//*[@id='main_content']/div[4]")
+    day_child = area_pg_btn.find_elements(By.XPATH, ".//*")
+    print(day_child[2].text)
+    day_child[2].click()
+    time.sleep(3)
 
     while(1):
         test_dp = ""
