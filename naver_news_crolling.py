@@ -9,6 +9,7 @@ import chromedriver_autoinstaller
 from selenium.webdriver.common.keys import Keys
 import openpyxl
 from datetime import date, timedelta, datetime
+from pyvirtualdisplay import Display
 #===================== 메일 발송 패키지
 import os
 import smtplib
@@ -314,10 +315,10 @@ def crop_content(driver):
     new_list = []
     news_dictionary = {}
     print("---Crop Start")
-    time.sleep(2)
+    # time.sleep(2)
     news_list = driver.find_elements(By.CLASS_NAME,"photo")
     print("뉴스 리스트 출력 : " + str(len(news_list)))
-    time.sleep(2)
+    # time.sleep(2)
 
     for i in range(len(news_list)):
         ActionChains(driver).key_down(Keys.CONTROL) \
@@ -326,7 +327,7 @@ def crop_content(driver):
             .perform()
 
         driver.switch_to.window(driver.window_handles[-1])
-        time.sleep(1)
+        time.sleep(2)
         news_dictionary = {}
         #print("=================================  " + str(i) + "  =========================================")
         try:
@@ -362,7 +363,7 @@ def crop_content(driver):
             news_dictionary["feel"] = emotion_list_value
             driver.close()
             driver.switch_to.window(driver.window_handles[0])
-            # time.sleep(2)
+            time.sleep(2)
 
             new_list.append(news_dictionary)
         except:
@@ -409,8 +410,8 @@ def send_mail(from_mail, to_mail, attach):
 
 def crolling_start(sheet_title, file_name, social_tab, social_tab_under):
     print("##Setting Display")
-    #display = Display(visible=0, size=(1920, 1000))
-    #display.start()
+    display = Display(visible=0, size=(1920, 1000))
+    display.start()
 
     print("##Crolling_Start")
     dirver = setting_driver()
@@ -420,7 +421,7 @@ def crolling_start(sheet_title, file_name, social_tab, social_tab_under):
     print("첫번째 페이지까지 자동 스크랩을 실행합니다.")
     move_prve_content(dirver, sheet_title, file_name, social_tab_under)
     #print(list)
-    #display.stop()
+    display.stop()
 
     #print("######################## 리스트 내역 엑셀화 ##############################")
 
