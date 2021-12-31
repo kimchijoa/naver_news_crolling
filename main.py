@@ -158,24 +158,24 @@ def main_process():
 
 
     #===============================================================================================================================================================================
-    #th1 = threading.Thread(target=naver.crolling_start, args=(sheet_title, file_name_list[0], social_tab[0], social_tab_under[0]))
+    th1 = threading.Thread(target=naver.crolling_start, args=(sheet_title, file_name_list[0], social_tab[0], social_tab_under[0]))
     th2 = threading.Thread(target=naver.crolling_start, args=(sheet_title, file_name_list[1], social_tab[1], social_tab_under[1]))
-    #th3 = threading.Thread(target=naver.crolling_start, args=(sheet_title, file_name_list[2], social_tab[2], social_tab_under[2]))
-    #th4 = threading.Thread(target=naver.crolling_start, args=(sheet_title, file_name_list[3], social_tab[3], social_tab_under[3]))
-    #th1.start() # 쓰레드 시작
+    th3 = threading.Thread(target=naver.crolling_start, args=(sheet_title, file_name_list[2], social_tab[2], social_tab_under[2]))
+    th4 = threading.Thread(target=naver.crolling_start, args=(sheet_title, file_name_list[3], social_tab[3], social_tab_under[3]))
+    th1.start() # 쓰레드 시작
     th2.start() # 쓰레드 시작
     th2.join()
     print("쓰레드2 종료")
     time.sleep(3)
-    #th3.start() # 쓰레드 끝날때까지 기다리는 역할
-    #th3.join() # 쓰레드 끝날때까지 기다리는 역할
+    th3.start() # 쓰레드 끝날때까지 기다리는 역할
+    th3.join() # 쓰레드 끝날때까지 기다리는 역할
     print("쓰레드3 종료")
     time.sleep(3)
-    #th4.start() # 쓰레드 시작
-    #th4.join() # 쓰레드 끝날때까지 기다리는 역할
-
-    #th1.join() # 쓰레드 끝날때까지 기다리는 역할
-    print("쓰레드1 종료")
+    th4.start() # 쓰레드 시작
+    th1.join() # 쓰레드 끝날때까지 기다리는 역할
+    print("쓰레드4 종료")
+    th4.join() # 쓰레드 끝날때까지 기다리는 역할
+    print("쓰레드4 종료")
     
     
     
@@ -208,9 +208,8 @@ def main_process():
 
 if __name__ == "__main__":
     while 1:
-        # print("00:05분에 실행될 예정입니다...")
-        # time.sleep(20)
-        # os.system("clear")
-        # schedule.every().day.at("00:09").do(main_process)
-        # schedule.run_pending()
-        main_process()
+        print("00:05분에 실행될 예정입니다...")
+        time.sleep(10)
+        os.system("clear")
+        schedule.every().day.at("00:05").do(main_process)
+        schedule.run_pending()
