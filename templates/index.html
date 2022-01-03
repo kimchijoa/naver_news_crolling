@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body> 
+    <h2>전달 데이터</h2> hello!! 
+    <svg width="700px" height="300px">
+    </svg>
+    <div> {{ data }} </div>
+
+    <script>
+        const data = '{{ data }}'
+        const series = ["사건사고", "사회일반","경제일반","정치일반"];
+        const xScale = d3.scaleLinear()
+            .domain([0, 500])
+            .range([20, 480]); // [0, 350] 을 넣어도 되지만.. 그러면 축이 너무 붙어있어서 20~330으로 설정.
+    
+        const yScale = d3.scaleLinear()
+        .domain([0, 200])
+        .range([180, 20]); // SVG 좌표상에서 y값이 높을수록 아래로 향하기 때문에 뒤집어서 330~20으로 설정.
+
+        //SVG 안에 G 태그를 생성한다.
+        const xAxisSVG = d3.select("svg").append("g").attr("transform", "translate(0, 200)");
+        //const xAxisSVG = d3.select("svg").append("g");
+        const yAxisSVG = d3.select("svg").append("g");
+        
+        //축을 만드는 함수를 만든다.
+        const xAxis = d3.axisBottom(xScale).tickSize(1).ticks(1);
+        const yAxis = d3.axisRight(yScale).tickSize(5).ticks(5);
+
+        xAxis(xAxisSVG);  //x축을 만드는 함수로 SVG > G 태그에 축을 생성한다.
+        yAxis(yAxisSVG);  //y축을 만드는 함수로 SVG > G 태그에 축을 생성한다.
+
+        var svgG = svg.append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        d3.select("svg").selectAll("circle")  // 1.SVG 태그 안에 있는 circle을 모두 찾는다.
+        .data(data)                         // 2.찾은 요소에 데이터를 씌운다.
+        .enter()                            // 3.찾은 요소에 개수보다 데이터가 더 많을경우..
+        .append("circle")                   // 4.circle 을 추가한다.
+        .attr("r", 3)                       //  - 반지름 5픽셀
+        .attr("cx", d=>xScale(d[0]))      //  - x 위치값 설정.
+        .attr("cy", d=>yScale(d[0]))     //  - y 위치값 설정. 
+        .style("fill", "black")             //  - 검정색
+
+        lineG.append("path")
+        .attr("class", "lineChart")
+        .style("stroke", function(d, i) { return colors( series[i]); })
+        .attr("d", line);
+ 
+        var legend = svgG.append("g")
+            .attr("text-anchor", "end")
+            .selectAll("g")
+            .data(series)
+            .enter().append("g")
+            .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+    </script>
+</body>
+</html>
+
+

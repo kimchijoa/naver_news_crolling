@@ -1,5 +1,7 @@
+import collections
 from sys import hash_info
 import time
+from typing import Collection
 from selenium import webdriver
 #from pyvirtualdisplay import Display
 from selenium.webdriver import ActionChains
@@ -19,7 +21,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import shutil
-
+import json
+from collections import OrderedDict
 #===============================================================================================================================
 def create_xls(sheet_title, file_name):
     wb = openpyxl.Workbook()
@@ -118,3 +121,38 @@ def write_graph_info_xls(sheet_title, file_name, tab_name, list_count, cost_valu
     load_sht["B" + str(now_sheet_row+1)] = list_count
     load_sht["C" + str(now_sheet_row+1)] = cost_value
     load_wb.save(file_name)
+
+def read_grap_speed(sheet_title, file_name):
+    category1_list = []
+    category2_list = []
+    category3_list = []
+    category4_list = []
+
+    load_wb = openpyxl.load_workbook(file_name, data_only=True)
+    # 시트 이름으로 불러오기
+    load_sht = load_wb[sheet_title]
+
+    now_sheet_row = load_sht.max_row
+
+    for i in range(2, now_sheet_row+1):
+        category_name = load_sht["A" + str(i)].value
+        cost = load_sht["C" + str(i)].value
+
+        if category_name == "사건사고":
+            category1_list.append([ str(i-1), cost ])
+        elif category_name == "사회 일반":
+            category2_list.append([ str(i-1), cost ])
+        elif category_name == "경제 일반":
+            category3_list.append([ str(i-1), cost ])
+        elif category_name == "정치일반":
+            category4_list.append([ str(i-1), cost ])
+
+    return_data = {"사건사고" : category1_list,
+        "사회 일반" : category2_list,
+        "경제 일반" : category3_list,
+        "정치일반" : category4_list,
+    }
+    json.dumps(return_data)
+
+
+    return return_data

@@ -11,25 +11,7 @@ import os
 import xls_controll as xls_c
 import naver_news_crolling as naver
 
-total_news_data = "total_news_data" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
-total_time = "will start this process"
 
-#생성할 폴더 이름, 엑셀시트, 엑셀파일명 지정
-root_folder_name = "news_data/"
-folder_name = root_folder_name + "news_data_" +(date.today() - timedelta(1)).isoformat() + "/"
-sheet_title = "social_news"
-file_name_list = [folder_name + "naver_news_social_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
-folder_name + "naver_news_social_accident_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
-folder_name + "naver_news_economy_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
-folder_name + "naver_news_politics_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"]
-graph_info_file_name = folder_name + "graph_speed_info_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"
-graph_sheet_title = "today_crolling_speed"
-#=======================================================================================================
-social_tab = ["사회", "사회", "경제", "정치"]
-social_tab_under = ["사회 일반","사건사고","경제 일반","정치일반"]
-#=======================================================================================================
-total_page = []
- #======================================================================================================
 
 
 
@@ -102,6 +84,23 @@ total_page = []
     # #mbc.send_mail("today22motion@gmail.com","zlxl7707@naver.com",total_news_data)
 
 def main_process():
+    total_news_data = "total_news_data" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
+    #생성할 폴더 이름, 엑셀시트, 엑셀파일명 지정
+    root_folder_name = "news_data/"
+    folder_name = root_folder_name + "news_data_" +(date.today() - timedelta(1)).isoformat() + "/"
+    sheet_title = "social_news"
+    file_name_list = [folder_name + "naver_news_social_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
+    folder_name + "naver_news_social_accident_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
+    folder_name + "naver_news_economy_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
+    folder_name + "naver_news_politics_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"]
+    graph_info_file_name = folder_name + "graph_speed_info_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"
+    graph_sheet_title = "today_crolling_speed"
+    #=======================================================================================================
+    social_tab = ["사회", "사회", "경제", "정치"]
+    social_tab_under = ["사회 일반","사건사고","경제 일반","정치일반"]
+    #=======================================================================================================
+    total_page = []
+    #======================================================================================================
     begin = time.time()
 
     xls_c.create_folder(root_folder_name, folder_name, sheet_title, file_name_list)
@@ -198,18 +197,19 @@ def main_process():
     combined.to_excel(total_news_data, header=False, index=False)        
 
     #메일 발송
-    # time.sleep(2)
-    # th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", total_news_data))
+    time.sleep(2)
+    th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", total_news_data))
     # #th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
-    # th5.start() # 쓰레드 시작
-    # th5.join() # 쓰레드 끝날때까지 기다리는 역할
-    #print("메일을 발송하였습니다.")
+    th5.start() # 쓰레드 시작
+    th5.join() # 쓰레드 끝날때까지 기다리는 역할
+    print("메일을 발송하였습니다.")
 
 
 if __name__ == "__main__":
     while 1:
-        print("00:05분에 실행될 예정입니다...")
+        print("00:01분에 실행될 예정입니다...")
         time.sleep(10)
         os.system("clear")
-        schedule.every().day.at("00:05").do(main_process)
+        schedule.every().day.at("00:01").do(main_process)
         schedule.run_pending()
+    #main_process()
