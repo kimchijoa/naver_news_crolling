@@ -10,8 +10,7 @@ import os
 #custom import
 import xls_controll as xls_c
 import naver_news_crolling as naver
-
-
+import mysql_conn as m_sql
 
 
 
@@ -197,19 +196,24 @@ def main_process():
     combined.to_excel(total_news_data, header=False, index=False)        
 
     #메일 발송
+    # time.sleep(2)
+    # th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", total_news_data))
+    # # #th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
+    # th5.start() # 쓰레드 시작
+    # th5.join() # 쓰레드 끝날때까지 기다리는 역할
+    # print("메일을 발송하였습니다.")
+
     time.sleep(2)
-    th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", total_news_data))
-    # #th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
-    th5.start() # 쓰레드 시작
-    th5.join() # 쓰레드 끝날때까지 기다리는 역할
-    print("메일을 발송하였습니다.")
+    sql_cursor, sql, conn = m_sql.create_conn_total_news_data()
+    m_sql.insert_total_data(conn, sql_cursor, sql, "Sheet1", total_news_data)
 
 
 if __name__ == "__main__":
-    while 1:
-        print("00:01분에 실행될 예정입니다...")
-        time.sleep(10)
-        os.system("clear")
-        schedule.every().day.at("00:01").do(main_process)
-        schedule.run_pending()
-    #main_process()
+    # while 1:
+    #     print("00:01분에 실행될 예정입니다...")
+    #     time.sleep(10)
+    #     os.system("clear")
+    #     schedule.every().day.at("00:01").do(main_process)
+    #     schedule.run_pending()
+    
+    main_process()

@@ -122,6 +122,7 @@ def write_graph_info_xls(sheet_title, file_name, tab_name, list_count, cost_valu
     load_sht["C" + str(now_sheet_row+1)] = cost_value
     load_wb.save(file_name)
 
+#그래프 속도 측정 결과 json 형태로 반환
 def read_grap_speed(sheet_title, file_name):
     category1_list = []
     category2_list = []
@@ -156,3 +157,4 @@ def read_grap_speed(sheet_title, file_name):
 
 
     return return_data
+
