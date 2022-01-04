@@ -30,7 +30,6 @@ def setting_driver():
     #print("---chromedriver_auto install done")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no_sandbox')
     chrome_options.add_argument("--single-process")
     chrome_options.add_argument("--disable-dev-shm-usage")
