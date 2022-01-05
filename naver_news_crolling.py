@@ -27,13 +27,15 @@ import xls_controll as xls
 #드라이버 객체 반환
 def setting_driver():
     chromedriver_autoinstaller.install()
-    #print("---chromedriver_auto install done")
+    print("---chromedriver_auto install done")
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no_sandbox')
-    chrome_options.add_argument("--single-process")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    #chrome_options.add_argument('window-size=1920,1400')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--single-process')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    # chrome_options.add_argument('--disable-gpu')
+    # chrome_options.add_argument('--disable-gpu-sandbox')
+    chrome_options.add_argument('window-size=1920,1400')
     driver = webdriver.Chrome(chrome_options=chrome_options)
     #print("---chromedriver import")
     driver.set_window_position(0, 0)
@@ -262,7 +264,7 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
         area_pg_btn = driver.find_element(By.XPATH, "// *[ @ id = 'main_content'] / div[3]")
         btn_child = area_pg_btn.find_elements(By.XPATH, ".//*")
         now_page = driver.current_url.split("=")[-1]
-        print("=== [" + str(social_tab_under) + "]" + "현재 페이지 : " + str(now_page) + " PAGE ===")
+        print("=== [" + str(social_tab_under) + "]" + "현재 페이지 : " + str(now_page) + " PAGE ===" + "NOW TIME : " + str(datetime.now()))
         #현재 페이지가 1이라면 페이지 이동 자체를 멈춘다.
 
         begin = time.time()
@@ -277,7 +279,7 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
         root_folder_name = "news_data/"
         folder_name = root_folder_name + "news_data_" +(date.today() - timedelta(1)).isoformat() + "/"
         graph_info_file_name = folder_name + "graph_speed_info_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"
-        xls.write_graph_info_xls(graph_sheet_title, graph_info_file_name, str(social_tab_under), now_page_list, str(result))
+        xls.write_graph_info_xls(graph_sheet_title, graph_info_file_name, str(social_tab_under), now_page_list, str(result), str(datetime.now()))
         
 
         for b in range(len(news_list)):
@@ -424,7 +426,6 @@ def crolling_start(sheet_title, file_name, social_tab, social_tab_under):
     #print(list)
     display.stop()
 
-    #print("######################## 리스트 내역 엑셀화 ##############################")
 
     
 

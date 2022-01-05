@@ -6,7 +6,7 @@ def create_conn_total_news_data():
     conn = mysql.connect(
         user='kkh', 
         passwd='rnjrnjwm12', 
-        host='172.19.0.3', 
+        host='172.19.0.2', 
         db='today_emotion', 
         charset='utf8',
         port=3306
@@ -19,7 +19,7 @@ def create_conn_total_news_data():
 
 
 #오늘 수집한 엑셀데이터 DB에 입력함
-def insert_total_data(conn, sql_cursor, sql, sheet_title, file_name):
+def insert_total_data(conn, sql_cursor, sql, sheet_title, file_name, y_date):
     load_wb = openpyxl.load_workbook(file_name, data_only=True)
     # 시트 이름으로 불러오기
     load_sht = load_wb[sheet_title]
@@ -37,7 +37,7 @@ def insert_total_data(conn, sql_cursor, sql, sheet_title, file_name):
         n_e_sad = load_sht["G" + str(i)].value
         n_e_angry = load_sht["H" + str(i)].value
         n_e_expect = load_sht["I" + str(i)].value
-        news_date = "2021-12-28"
+        news_date = y_date
         val = (category_name, news_title, news_link, news_content, n_e_like, n_e_good, n_e_sad, n_e_angry, n_e_expect, news_date)
         #time.sleep(1)
         #print(str(val))
