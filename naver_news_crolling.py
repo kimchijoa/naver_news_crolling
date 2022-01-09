@@ -279,7 +279,7 @@ def move_prve_content(driver, sheet_title, file_name, social_tab_under):
         root_folder_name = "news_data/"
         folder_name = root_folder_name + "news_data_" +(date.today() - timedelta(1)).isoformat() + "/"
         graph_info_file_name = folder_name + "graph_speed_info_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"
-        xls.write_graph_info_xls(graph_sheet_title, graph_info_file_name, str(social_tab_under), now_page_list, str(result), str(datetime.now()))
+        xls.write_graph_info_xls(graph_sheet_title, graph_info_file_name, str(social_tab_under), now_page_list, str(result))
         
 
         for b in range(len(news_list)):

@@ -112,7 +112,7 @@ def create_graph_info_xls(sheet_title, file_name):
     print("엑셀파일 생성")
 
 #그래프 속도 측정용 엑셀파일 쓰기 ====================================================================================================
-def write_graph_info_xls(sheet_title, file_name, tab_name, list_count, cost_value, now_time):
+def write_graph_info_xls(sheet_title, file_name, tab_name, list_count, cost_value):
     load_wb = openpyxl.load_workbook(file_name, data_only=True)
     # 시트 이름으로 불러오기
     load_sht = load_wb[sheet_title]
@@ -121,7 +121,6 @@ def write_graph_info_xls(sheet_title, file_name, tab_name, list_count, cost_valu
     load_sht["A" + str(now_sheet_row+1)] = tab_name
     load_sht["B" + str(now_sheet_row+1)] = list_count
     load_sht["C" + str(now_sheet_row+1)] = cost_value
-    load_sht["D" + str(now_sheet_row+1)] = now_time
     load_wb.save(file_name)
 
 #그래프 속도 측정 결과 json 형태로 반환

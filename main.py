@@ -11,8 +11,7 @@ import os
 import xls_controll as xls_c
 import naver_news_crolling as naver
 import mysql_conn as m_sql
-
-
+import aws_s3_config as s3
 
 # def go_schedule_crolling():
 #     sheet_title = "social_news"
@@ -93,6 +92,7 @@ def main_process():
     folder_name + "naver_news_economy_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx", 
     folder_name + "naver_news_politics_normal_content_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"]
     graph_info_file_name = folder_name + "graph_speed_info_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"
+    graph_info_file = "graph_speed_info_" + (date.today() - timedelta(1)).isoformat() + ".xlsx"
     graph_sheet_title = "today_crolling_speed"
     #=======================================================================================================
     social_tab = ["사회", "사회", "경제", "정치"]
@@ -191,29 +191,33 @@ def main_process():
     combined = pd.concat(frames)
 
     #파일저장
-    total_news_data = folder_name + "total_news_data_" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
-    combined.to_excel(total_news_data, header=False, index=False)        
+    total_news_data = "total_news_data_" +(date.today() - timedelta(1)).isoformat() + ".xlsx"
+    combined.to_excel(folder_name + total_news_data, header=False, index=False)
+
+    #s3에 파일 업로드 및 DB에 업로드
+    #folder_path, file_name, s3_folder
+    s3.handle_upload_file(folder_name, total_news_data, "total_news/")       
+    s3.handle_upload_file(folder_name, graph_info_file, "total_greph_info/")
 
     #메일 발송
     time.sleep(2)
-    th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", total_news_data))
+    th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", folder_name + total_news_data))
     # #th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
     th5.start() # 쓰레드 시작
     th5.join() # 쓰레드 끝날때까지 기다리는 역할
     print("메일을 발송하였습니다.")
 
     time.sleep(2)
-    sql_cursor, sql, conn = m_sql.create_conn_total_news_data()
-    m_sql.insert_total_data(conn, sql_cursor, sql, "Sheet1", total_news_data, (date.today() - timedelta(1)).isoformat())
+    sql_cursor, conn = m_sql.create_conn()
+    m_sql.insert_total_data(conn, sql_cursor, "Sheet1", folder_name + total_news_data, (date.today() - timedelta(1)).isoformat())
 
 #스케쥴러 확인용
 schedule.every().day.at("00:01").do(main_process)
 
 if __name__ == "__main__":
+    print("00:01분에 실행될 예정입니다...")
     while 1:
-        print("00:01분에 실행될 예정입니다...")
         time.sleep(10)
-        #os.system("clear")
         schedule.run_pending()
         
     # root_folder_name = "news_data/"

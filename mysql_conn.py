@@ -2,24 +2,24 @@ import pymysql as mysql
 import openpyxl
 import time
 
-def create_conn_total_news_data():
+def create_conn():
     conn = mysql.connect(
         user='kkh', 
         passwd='rnjrnjwm12', 
-        host='172.19.0.2', 
+        host='172.19.0.3', 
         db='today_emotion', 
         charset='utf8',
         port=3306
     )
 
     sql_cursor = conn.cursor()
-    sql = "INSERT INTO today_news_data (n_category, n_title, n_link, n_content, n_e_like, n_e_good, n_e_sad, n_e_angry, n_e_expect, news_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+    print("DB 연결")
+    return sql_cursor, conn
 
-    return sql_cursor, sql, conn
-
-
+#===============================================================================================================================
 #오늘 수집한 엑셀데이터 DB에 입력함
-def insert_total_data(conn, sql_cursor, sql, sheet_title, file_name, y_date):
+def insert_total_data(conn, sql_cursor, sheet_title, file_name, y_date):
+    sql = "INSERT INTO today_news_data (n_category, n_title, n_link, n_content, n_e_like, n_e_good, n_e_sad, n_e_angry, n_e_expect, news_date) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
     load_wb = openpyxl.load_workbook(file_name, data_only=True)
     # 시트 이름으로 불러오기
     load_sht = load_wb[sheet_title]
@@ -52,6 +52,23 @@ def insert_total_data(conn, sql_cursor, sql, sheet_title, file_name, y_date):
 
     conn.close()
     print("삽입 실패한 데이터 갯수 : " + str(fail_count) + "개")
+
+#===============================================================================================================================
+#오늘 수집한 엑셀데이터 DB에 입력함
+def insert_aws_data(conn, sql_cursor, s3_key, s3_file_name, s3_file_size, update_date):
+    sql = "INSERT INTO s3_info (s3_key, s3_file_name, s3_file_size, update_date) VALUES (%s, %s, %s, %s)"
+    val = (s3_key, s3_file_name, s3_file_size, update_date)
+    try:
+        sql_cursor.execute(sql, val)
+        conn.commit()
+        print("s3 데이터가 성공적으로 업로드 되었습니다.")
+    except:
+        print("s3 업로드 데이터 실패")
+    
+    conn.close()
+
+
+#===================================================================================================================================
 
 #엑셀 파일을 순차적으로 DB에 저장함
 def read_grap_speed(sheet_title, file_name):
@@ -87,3 +104,7 @@ def read_grap_speed(sheet_title, file_name):
 
     conn.close()
     print("삽입 실패한 데이터 갯수 : " + str(fail_count) + "개")
+
+
+
+# create_conn()
