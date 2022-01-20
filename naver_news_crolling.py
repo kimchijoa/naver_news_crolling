@@ -64,14 +64,8 @@ def write_xls(sheet_title, file_name, tab_name, list):
             else:
                 load_sht[str(feel_list[j]) + str(now_sheet_row+1)] = list[i]['feel'][j]
 
-        # load_sht["E" + str(now_sheet_row+1)] = list[i]['feel'][0]
-        # load_sht["F" + str(now_sheet_row+1)] = list[i]['feel'][1]
-        # load_sht["G" + str(now_sheet_row+1)] = list[i]['feel'][2]
-        # load_sht["H" + str(now_sheet_row+1)] = list[i]['feel'][3]
-        # load_sht["I" + str(now_sheet_row+1)] = list[i]['feel'][4]
-
     load_wb.save(file_name)
-    #print("##내용 저장 완료")
+
 
 
 #====================================================================================================================================================================

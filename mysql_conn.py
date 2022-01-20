@@ -3,17 +3,30 @@ import openpyxl
 import time
 
 def create_conn():
-    conn = mysql.connect(
+    try:
+        conn = mysql.connect(
+            user='kkh', 
+            passwd='rnjrnjwm12', 
+            host='172.19.0.2', 
+            db='today_emotion', 
+            charset='utf8',
+            port=3306
+        )
+        sql_cursor = conn.cursor()
+        print("DB 연결 : 172.19.0.2")
+    except:
+        conn = mysql.connect(
         user='kkh', 
         passwd='rnjrnjwm12', 
         host='172.19.0.3', 
         db='today_emotion', 
         charset='utf8',
         port=3306
-    )
+        )
+        sql_cursor = conn.cursor()
+        print("DB 연결 : 172.19.0.3")
 
-    sql_cursor = conn.cursor()
-    print("DB 연결")
+    
     return sql_cursor, conn
 
 #===============================================================================================================================
@@ -116,4 +129,4 @@ def read_grap_speed(sheet_title, file_name):
 
 
 
-# create_conn()
+create_conn()

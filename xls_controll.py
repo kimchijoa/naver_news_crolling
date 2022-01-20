@@ -9,6 +9,8 @@ from selenium.webdriver.common.by import By
 import chromedriver_autoinstaller
 from selenium.webdriver.common.keys import Keys
 import openpyxl
+import mysql_conn as mysql
+import pymysql
 from datetime import datetime
 from datetime import date, timedelta
 #===================== 메일 발송 패키지
@@ -39,7 +41,7 @@ def create_xls(sheet_title, file_name):
     sheet1["G1"] = "슬퍼요"
     sheet1["H1"] = "화나요"
     sheet1["I1"] = "기대 돼요"
-    sheet1["J1"] = "트래픽 양"
+    sheet1["J1"] = "날짜"
 
     wb.save(new_file_name)
     print("엑셀파일 생성")
@@ -158,4 +160,3 @@ def read_grap_speed(sheet_title, file_name):
 
 
     return return_data
-

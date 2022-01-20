@@ -1,6 +1,5 @@
 from logging import Manager
-from flask import Flask, render_template
-import mbc_social_new_crolling as mbc
+from flask import Flask, render_template, jsonify
 from datetime import date, timedelta, datetime
 #===
 import os
@@ -8,6 +7,7 @@ import sys
 import urllib.request
 import time
 import xls_controll as xls
+from flask_func import mysql_conn as mysql
 
 
 app = Flask(__name__)
@@ -15,13 +15,12 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     #return render_template("index.html", data='전달데이터')
-    graph_info = xls.read_grap_speed("today_crolling_speed", "news_data/news_data_2021-12-31/graph_speed_info_2021-12-31.xlsx")
-    return render_template("index.html", data= graph_info)
+    return render_template("index.html")
 
-@app.route('/sample')
-def sample():
+@app.route('/total_data/date/<date>')
+def select_date(date):
     #return render_template("index.html", data='전달데이터')
-    return render_template("d3_sample.html")
+    return jsonify(mysql.select_yesterday(date))
 
 
 # @app.route('/social')
