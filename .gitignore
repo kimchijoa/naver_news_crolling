@@ -1,6 +1,5 @@
 
 news_data/
-mysql/
-mysql_conn.py
-aws_s3_config.py
+func/mysql_conn.py
+func/aws_s3_config.py
 google-chrome-stable_current_amd64.deb
