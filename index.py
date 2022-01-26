@@ -6,8 +6,10 @@ import os
 import sys
 import urllib.request
 import time
-import xls_controll as xls
 from flask_func import mysql_conn as mysql
+sys.path.append("/naver_news_crolling/func/")
+import xls_controll as xls
+
 
 
 app = Flask(__name__)
@@ -22,6 +24,15 @@ def select_date(date):
     #return render_template("index.html", data='전달데이터')
     return jsonify(mysql.select_yesterday(date))
 
+@app.route('/check_today_status/<date>')
+def show_date(date):
+    #return render_template("index.html", data='전달데이터')
+    return jsonify(mysql.get_yesterday_cron_job(date))
+    #return mysql.get_yesterday_cron_job(date)
+
+
+if __name__=='__main__':
+ app.run(host='0.0.0.0', port=5000, debug=True)
 
 # @app.route('/social')
 # def hello_social():

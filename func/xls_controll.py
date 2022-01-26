@@ -126,38 +126,21 @@ def write_graph_info_xls(sheet_title, file_name, tab_name, list_count, cost_valu
     load_sht["D" + str(now_sheet_row+1)] = update_date
     load_wb.save(file_name)
 
-#그래프 속도 측정 결과 json 형태로 반환
-def read_grap_speed(sheet_title, file_name):
-    category1_list = []
-    category2_list = []
-    category3_list = []
-    category4_list = []
 
+def load_local_c_speed_info(date):
+    file_name = "/naver_news_crolling/news_data/news_data_" + date + "/" + "graph_speed_info_" + date  + ".xlsx"
+    sheet_title = "today_crolling_speed"
     load_wb = openpyxl.load_workbook(file_name, data_only=True)
-    # 시트 이름으로 불러오기
     load_sht = load_wb[sheet_title]
+    
+    return load_sht.max_row - 1
+    
 
-    now_sheet_row = load_sht.max_row
-
-    for i in range(2, now_sheet_row+1):
-        category_name = load_sht["A" + str(i)].value
-        cost = load_sht["C" + str(i)].value
-
-        if category_name == "사건사고":
-            category1_list.append([ str(i-1), cost ])
-        elif category_name == "사회 일반":
-            category2_list.append([ str(i-1), cost ])
-        elif category_name == "경제 일반":
-            category3_list.append([ str(i-1), cost ])
-        elif category_name == "정치일반":
-            category4_list.append([ str(i-1), cost ])
-
-    return_data = {"사건사고" : category1_list,
-        "사회 일반" : category2_list,
-        "경제 일반" : category3_list,
-        "정치일반" : category4_list,
-    }
-    json.dumps(return_data)
-
-
-    return return_data
+def load_local_total_news_info(date):
+    file_name = "/naver_news_crolling/news_data/news_data_" + date + "/" + "total_news_data_" + date  + ".xlsx"
+    sheet_title = "Sheet1"
+    load_wb = openpyxl.load_workbook(file_name, data_only=True)
+    load_sht = load_wb[sheet_title]
+    
+    return load_sht.max_row - 1
+    

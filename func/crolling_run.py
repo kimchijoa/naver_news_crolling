@@ -20,11 +20,12 @@ import aws_s3_config as s3
 
 def main_process():
     print("날짜설정")
-    print(datetime.datetime.now())
+    print("=== " + str(datetime.datetime.now()) + " ===")
     use_date = date.today().isoformat()
+    #use_date = "2033-33-33"
     #생성할 폴더 이름, 엑셀시트, 엑셀파일명 지정
     root_folder_name = "/naver_news_crolling/news_data/" #crontab 테스트의 경우 news_data 대신 test_news_data 사용
-    folder_name = root_folder_name + "news_data_" + use_date + "/"smf di
+    folder_name = root_folder_name + "news_data_" + use_date + "/"
     sheet_title = "social_news"
     file_name_list = [folder_name + "naver_news_social_normal_content_" + use_date + ".xlsx", 
     folder_name + "naver_news_social_accident_content_" + use_date + ".xlsx", 
@@ -82,15 +83,15 @@ def main_process():
     total_news_data = "total_news_data_" + use_date + ".xlsx"
     combined.to_excel(folder_name + total_news_data, header=False, index=False)
 
-    #s3에 파일 업로드 및 DB에 업로드
-    folder_path, file_name, s3_folder
+    # s3에 파일 업로드 및 DB에 업로드
+    # folder_path, file_name, s3_folder
     s3.handle_upload_file(folder_name, total_news_data, "total_news/", use_date)       
     s3.handle_upload_file(folder_name, graph_info_file, "total_greph_info/", use_date)
 
-    #메일 발송
+    # 메일 발송
     time.sleep(2)
     th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", folder_name + total_news_data))
-    #th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
+    th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
     th5.start() # 쓰레드 시작
     th5.join() # 쓰레드 끝날때까지 기다리는 역할
     print("메일을 발송하였습니다.")
