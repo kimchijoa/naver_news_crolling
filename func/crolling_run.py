@@ -7,6 +7,8 @@ import pandas as pd
 import schedule
 import os
 import sys
+import multiprocessing as mp
+from multiprocessing import Pool, Process
 #custom import
 sys.path.append("/naver_news_crolling/func/")
 import xls_controll as xls_c
@@ -48,22 +50,21 @@ def main_process():
     
     #===============================================================================================================================================================================
     print("쓰레드 시작")
-    th1 = threading.Thread(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[0], social_tab[0], social_tab_under[0], graph_info_file_name, use_date))
-    th2 = threading.Thread(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[1], social_tab[1], social_tab_under[1], graph_info_file_name, use_date))
-    th3 = threading.Thread(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[2], social_tab[2], social_tab_under[2], graph_info_file_name, use_date))
-    th4 = threading.Thread(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[3], social_tab[3], social_tab_under[3], graph_info_file_name, use_date))
-    th1.start() # 쓰레드 시작
-    th2.start() # 쓰레드 시작
-    th3.start() # 쓰레드 끝날때까지 기다리는 역할
-    th2.join()
+    Process1 = Process(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[0], social_tab[0], social_tab_under[0], graph_info_file_name, use_date))
+    Process2 = Process(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[1], social_tab[1], social_tab_under[1], graph_info_file_name, use_date))
+    Process3 = Process(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[2], social_tab[2], social_tab_under[2], graph_info_file_name, use_date))
+    Process4 = Process(target=naver.crolling_start, args=(sheet_title, graph_sheet_title, file_name_list[3], social_tab[3], social_tab_under[3], graph_info_file_name, use_date))
+    Process1.start() # 쓰레드 시작
+    Process2.start() # 쓰레드 시작
+    Process3.start() # 쓰레드 끝날때까지 기다리는 역할
+    Process2.join()
     print("쓰레드2 종료")
-    th3.join() # 쓰레드 끝날때까지 기다리는 역할
+    Process3.join() # 쓰레드 끝날때까지 기다리는 역할
     print("쓰레드3 종료")
-    time.sleep(3)
-    th4.start() # 쓰레드 시작
-    th1.join() # 쓰레드 끝날때까지 기다리는 역할
+    Process4.start() # 쓰레드 시작
+    Process1.join() # 쓰레드 끝날때까지 기다리는 역할
     print("쓰레드1 종료")
-    th4.join() # 쓰레드 끝날때까지 기다리는 역할
+    Process4.join() # 쓰레드 끝날때까지 기다리는 역할
     print("쓰레드4 종료")
     
     
@@ -91,7 +92,6 @@ def main_process():
     # 메일 발송
     time.sleep(2)
     th5= threading.Thread(target=naver.send_mail, args=("today22motion@gmail.com","zlxl7707@naver.com", folder_name + total_news_data))
-    th5= threading.Thread(target=mbc_social_new_crolling_win.send_mail, args=("today22motion@gmail.com","amsmdmfm159@naver.com", total_news_data))
     th5.start() # 쓰레드 시작
     th5.join() # 쓰레드 끝날때까지 기다리는 역할
     print("메일을 발송하였습니다.")

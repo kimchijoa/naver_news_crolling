@@ -16,19 +16,15 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    #return render_template("index.html", data='전달데이터')
     return render_template("index.html")
 
 @app.route('/total_data/date/<date>')
 def select_date(date):
-    #return render_template("index.html", data='전달데이터')
     return jsonify(mysql.select_yesterday(date))
 
 @app.route('/check_today_status/<date>')
 def show_date(date):
-    #return render_template("index.html", data='전달데이터')
     return jsonify(mysql.get_yesterday_cron_job(date))
-    #return mysql.get_yesterday_cron_job(date)
 
 
 if __name__=='__main__':
