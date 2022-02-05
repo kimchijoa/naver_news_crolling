@@ -19,19 +19,33 @@
     <nav>Today Emotion DashBoard</nav>
     <div id="left_menu"></div>
     <div id="wrap">
-        <!-- <h3>오늘의 기분 DashBoard</h3> 
+        <div class="sector_seprate">
+            <p id="menu_title">어제 크롤링 정보<img class="loading_img" src="/static/img/loading.gif" width=50></p>
+            <div id="y_crolling_info"></div>
+        </div>
+
+        <div class="sector_seprate">
+            <p id="menu_title">어제의 카테고리별 뉴스 현황</p>
+            <div id="svg_01"></div>
+        </div>
+
+        <div class="sector_seprate">
+            <p id="menu_title">어제의 크롤링 속도 정보</p>
+            <div id="svg_02"></div>
+        </div>
         
-        <div>
-            <input id="total_search_date" type="text" value="">
-            <input id="total_search_date_btn" type="button" value="검색">
-        </div> -->
-        <p id="menu_title">어제 크롤링 정보<img class="loading_img" src="/static/img/loading.gif" width=50></p>
-        <div id="y_crolling_info"></div>
+
+        <div style="width:100%; clear:both;"></div>
 
         <h4 id="load_state">
             <img src="/static/img/loading.gif" width=50>
             로딩중...
         </h4>
+
+
+
+        <script src="{{ url_for('static', filename='js/create_svg.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/create_svg02.js') }}"></script>
 
         <table class="table" id="yesterday_info">
             <tr>

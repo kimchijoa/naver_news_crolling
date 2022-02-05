@@ -71,5 +71,33 @@ def get_yesterday_cron_job(date):
  
     return db_news_row_cnt, local_news_row_cnt, db_s3_info
 
+def get_yesterday_crolling_data(date):
+    sql_cursor, conn = create_conn()
+    sql = "SELECT COUNT(CASE WHEN n_category = '사회 일반' THEN 1 END) as c_s_normal, COUNT(CASE WHEN n_category = '사건사고' THEN 1 END) as c_accident, "
+    sql = sql + "COUNT(CASE WHEN n_category = '경제 일반' THEN 1 END) as c_e_normal, "
+    sql = sql + "COUNT(CASE WHEN n_category = '정치일반' THEN 1 END) as c_p_normal "
+    sql = sql + "FROM today_news_data WHERE news_date=" + "'" + date + "';"
+    cursor = conn.cursor(mysql.cursors.DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+    json_arr = [];
+    json_arr.append({"category":"사회일반", "cnt" : result[0]['c_s_normal']})
+    json_arr.append({"category":"사건사고", "cnt" : result[0]['c_accident']})
+    json_arr.append({"category":"경제일반", "cnt" : result[0]['c_e_normal']})
+    json_arr.append({"category":"정치일반", "cnt" : result[0]['c_p_normal']})
+    
+    return json_arr
+
+def get_yesterday_crolling_sp_info(date):
+    sql_cursor, conn = create_conn()
+    sql = "SELECT idx, cost_time FROM crolling_speed_info WHERE update_date=" + "'" + date  + "';"
+    cursor = conn.cursor(mysql.cursors.DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+ 
+    return result
+
 create_conn()
 

@@ -26,6 +26,16 @@ def select_date(date):
 def show_date(date):
     return jsonify(mysql.get_yesterday_cron_job(date))
 
+@app.route('/get_yesterday_crolling_sp_info/<date>')
+def show_c_data(date):
+    return jsonify(mysql.get_yesterday_crolling_sp_info(date))
+
+@app.route('/get_yesterday_crolling_data/<date>')
+def show_c_data_count(date):
+    return jsonify(mysql.get_yesterday_crolling_data(date))
+
+
+
 
 if __name__=='__main__':
  app.run(host='0.0.0.0', port=5000, debug=True)
