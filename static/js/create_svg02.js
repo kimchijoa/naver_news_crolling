@@ -27,10 +27,10 @@ $.ajax({
 //var data = [ {"date":1, "close":1},{"date":2, "close":3},{"date":3, "close":2},{"date":4, "close":2} ];
 //var data_j = JSON.stringify(data);
 function draw_path(data){
-    var height=200;
+    var height=300;
     var svg = d3.select("#svg_02")
                     .append("svg")
-                            .attr("width","400")
+                            .attr("width","500")
                             .attr("height",height)
 
     //y축 정보 추가
@@ -42,7 +42,7 @@ function draw_path(data){
     //x축 정보 추가
     var xscale = d3.scaleBand()
         .domain(data.map((d) => d.idx))
-        .range([50, 400]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
+        .range([50, 450]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
 
     var line = d3.line()
         .x((d) => xscale(d.idx) +  xscale.bandwidth() / 2)
@@ -71,7 +71,7 @@ function draw_path(data){
             .call(yAxis);
             
     // x 축 추가
-    x_group.attr('transform', "translate(0, 180)") 
+    x_group.attr('transform', "translate(0, 280)") 
             .call(xAxis); 
 
 }

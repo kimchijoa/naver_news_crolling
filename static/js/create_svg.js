@@ -27,10 +27,10 @@ $.ajax({
 
 function draw_rect(data){
     var color=['red','green','blue','yellow'];
-    var height=200;
+    var height=300;
     var svg = d3.select("#svg_01")
                     .append("svg")
-                            .attr("width","400")
+                            .attr("width","500")
                             .attr("height",height)
     //막대 그래프의 높이 비율을 조정한다.
     var height_scale =  (d3.max(data, (d) => d.cnt) + 500) / (height -40);
@@ -44,7 +44,7 @@ function draw_rect(data){
     //x축 정보 추가
     var xscale = d3.scaleBand()
         .domain(data.map((d) => d.category)) //실제값의 범위
-        .range([50, 400 + 20]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
+        .range([50, 450]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
 
     //막대바, x축, y축 그룹 추가
     var group = svg.append('g');
@@ -52,7 +52,7 @@ function draw_rect(data){
     var y_group = svg.append('g').attr('id',"y_scale");
 
     //데이터 별로 막대바를 추가
-    group.attr("transform","translate(50,180)");
+    group.attr("transform","translate(50,280)");
     group.selectAll('rect').data(data)
         .enter().append('rect').attr('class',(d,i)=>color[i])
                                 .attr('x', (d,i)=> 25 + i*xscale.bandwidth())
@@ -82,7 +82,7 @@ function draw_rect(data){
             .call(yAxis);
             
     // x 축 추가
-    x_group.attr('transform', "translate(0, 180)") 
+    x_group.attr('transform', "translate(0, 280)") 
             .call(xAxis); 
 
 
