@@ -14,6 +14,7 @@ $.ajax({
     success: function(result) { 
         if (result) 
         { 
+            $("#svg_02").empty();
             data = result;
             draw_path(data);
         } 
@@ -27,22 +28,22 @@ $.ajax({
 //var data = [ {"date":1, "close":1},{"date":2, "close":3},{"date":3, "close":2},{"date":4, "close":2} ];
 //var data_j = JSON.stringify(data);
 function draw_path(data){
-    var height=300;
     var svg = d3.select("#svg_02")
                     .append("svg")
-                            .attr("width","500")
-                            .attr("height",height)
-
+                            .attr("width","calc(100% - 20px)")
+                            .attr("height","calc(100% - 20px)")
+    var s_width = $("#svg_02").width();
+    var s_height = $("#svg_02").height();
     //y축 정보 추가
     var yscale = d3.scaleLinear()
         .domain([0, d3.max(data, (d) => d.cost_time) + 50]) //실제값의 범위
-        .range([height - 20, 20]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
+        .range([s_height - 40, 0]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
         
 
     //x축 정보 추가
     var xscale = d3.scaleBand()
         .domain(data.map((d) => d.idx))
-        .range([50, 450]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
+        .range([50, s_width-50]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
 
     var line = d3.line()
         .x((d) => xscale(d.idx) +  xscale.bandwidth() / 2)
@@ -62,16 +63,16 @@ function draw_path(data){
 
     var yAxis = d3.axisLeft()
                 .scale(yscale)
-                .ticks(4);
+                .ticks(10);
 
     var xAxis = d3.axisBottom()
-                .scale(xscale)
+                .scale(xscale);
 
     y_group.attr('transform', 'translate(50, 0)') 
             .call(yAxis);
             
     // x 축 추가
-    x_group.attr('transform', "translate(0, 280)") 
+    x_group.attr('transform', "translate(0," + (s_height-40) + ")") 
             .call(xAxis); 
 
 }
