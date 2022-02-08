@@ -91,7 +91,8 @@ def get_yesterday_crolling_data(date):
 
 def get_yesterday_crolling_sp_info(date):
     sql_cursor, conn = create_conn()
-    sql = "SELECT idx, cost_time FROM crolling_speed_info WHERE update_date=" + "'" + date  + "';"
+    #sql = "SELECT idx, cost_time FROM crolling_speed_info WHERE update_date=" + "'" + date  + "';"
+    sql = "SELECT @rownum := @rownum+1 AS RNUM , cost_time FROM crolling_speed_info, (SELECT @rownum := 0) R WHERE update_date=" + "'" +  date + "';"
     cursor = conn.cursor(mysql.cursors.DictCursor)
     cursor.execute(sql)
     result = cursor.fetchall()

@@ -25,8 +25,6 @@ $.ajax({
     } 
 });
 
-//var data = [ {"date":1, "close":1},{"date":2, "close":3},{"date":3, "close":2},{"date":4, "close":2} ];
-//var data_j = JSON.stringify(data);
 function draw_path(data){
     var svg = d3.select("#svg_02")
                     .append("svg")
@@ -41,12 +39,16 @@ function draw_path(data){
         
 
     //x축 정보 추가
-    var xscale = d3.scaleBand()
-        .domain(data.map((d) => d.idx))
+    //var xscale = d3.scaleBand()
+    var xscale = d3.scaleLinear()
+        .domain([0, d3.max(data, (d) => d.RNUM)]) 
+        //.domain(data.map((d) => d.RNUM))
+        //.domain([0,1,2,3,4,5])
         .range([50, s_width-50]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
 
     var line = d3.line()
-        .x((d) => xscale(d.idx) +  xscale.bandwidth() / 2)
+        //.x((d) => xscale(d.RNUM) +  xscale.bandwidth() / 2)
+        .x((d) => xscale(d.RNUM))
         .y((d) => yscale(d.cost_time));
     //막대바, x축, y축 그룹 추가
     var group = svg.append('g');
@@ -66,7 +68,8 @@ function draw_path(data){
                 .ticks(10);
 
     var xAxis = d3.axisBottom()
-                .scale(xscale);
+                .scale(xscale)
+                .ticks(10);
 
     y_group.attr('transform', 'translate(50, 0)') 
             .call(yAxis);

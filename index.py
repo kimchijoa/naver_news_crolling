@@ -9,6 +9,7 @@ import time
 from flask_func import mysql_conn as mysql
 sys.path.append("/naver_news_crolling/func/")
 import xls_controll as xls
+import data_normalization_run as nmo
 
 
 
@@ -33,6 +34,10 @@ def show_c_data(date):
 @app.route('/get_yesterday_crolling_data/<date>')
 def show_c_data_count(date):
     return jsonify(mysql.get_yesterday_crolling_data(date))
+
+@app.route('/get_yesterday_crolling_data/wordcloud/<date>')
+def show_c_data_wc(date):
+    return jsonify(nmo.nmo_run(date))
 
 
 

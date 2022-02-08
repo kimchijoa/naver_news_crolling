@@ -64,15 +64,15 @@ window.onload = function(){
         success: function(result) {
             if(result)
             {
-                console.log(result);
+                // console.log(result);
                 //로딩이미지 삭제
                 $("#y_crolling_info").empty();
-                console.log(result[0][0]["db_news_cnt"]);
-                console.log(result[1]["local_news_cnt"]);
-                console.log(result[2][0]["s3_file_name"]);
-                console.log(result[2][0]["s3_file_size"]);
-                console.log(result[2][1]["s3_file_name"]);
-                console.log(result[2][1]["s3_file_size"]);
+                // console.log(result[0][0]["db_news_cnt"]);
+                // console.log(result[1]["local_news_cnt"]);
+                // console.log(result[2][0]["s3_file_name"]);
+                // console.log(result[2][0]["s3_file_size"]);
+                // console.log(result[2][1]["s3_file_name"]);
+                // console.log(result[2][1]["s3_file_size"]);
                 
                 $("#y_crolling_info").append('<p id="total_db_row"><p>');
                 $("#y_crolling_info").append('<p id="total_local_row"><p>');
