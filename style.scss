@@ -5,12 +5,13 @@
 
 html, body {margin : 0; padding: 0; width:100%; height:100%; overflow:auto; background-color: white; font-size:15px; font-family: nanum;}
 
-nav { width:100%; height:100px; background-color:#1C1C1C; position: fixed; z-index: 1000; color:white; font-size: 3rem; line-height: 100px; padding-left: 30px;}
+nav { width:100%; height:100px; background-color:#0B0B3B; position: fixed; z-index: 1000; color:white; font-size: 3rem; line-height: 100px; padding-left: 30px;}
 #wrap { width:calc(100% - 150px); float:left; position: relative; margin-left:150px; margin-top:100px; padding:25px;}
-#left_menu { width:150px; height:calc(100vh - 100px); float:left; position: fixed;  margin-top:100px; background-color: #F2F2F2;}
+#left_menu { width:150px; height:calc(100vh - 100px); float:left; position: fixed;  margin-top:100px; background-color: #BDBDBD;}
 #right_menu { width:100px; height:100vh; float:left; position: relative; margin-top:100px;}
 
-#section_title { font-size: 1.7rem; font-weight: bold; color:#2E2E2E; margin-top:15px; margin-bottom: 15px; border-bottom: 2.5px solid #2E2E2E;}
+#section_title { font-size: 1.7rem; font-weight: bold; color:#2E2E2E; margin-top:15px; margin-bottom: 15px; border-bottom: 2.5px solid #F7D358;}
+.menu_title_small { font-size:1.1rem; font-weight: bold; }
 
 //size is normal, large
 .section_wrap {
@@ -18,23 +19,54 @@ nav { width:100%; height:100px; background-color:#1C1C1C; position: fixed; z-ind
     
     .content { margin:0px 5px 0px 5px; flex:1; display: flex; flex-direction: column; justify-content: center; align-items: stretch; 
         #menu_title { font-size:1.3rem; font-weight: bold;}
-        .graph_content { flex:1; border-radius:  10px; border:2px solid #272727; height:300px; padding:10px; display: flex; justify-content: center; align-items: center; background-color: #FAFAFA;
+        .graph_content { flex:1; border-radius:  10px; border:2px solid #272727; height:300px; padding:10px; display: flex; justify-content: center; flex-direction: column; align-items: center; background-color: #FAFAFA;
             img { height:100%;}
         }
         .normal_content {  flex:1;  border-radius:  10px; border:2px solid #272727; height:300px; padding:10px; display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #FAFAFA;
             img { height:100%;}
         }
+        .explain_title { margin:0; padding:0; font-size:0.9rem; flex: 1; margin:10px; font-weight: bold; height:30px; display: flex; justify-content: center; align-items: center;
+            .material-icons { margin-right:10px;}
+            .loss_data { color:#FE2E2E; }
+        }
+        #download_data01 { flex:2;}
+        #download_data02 { flex:2.5;}
+        
     }
+    .horizen {  flex-direction: row; }
     
 }
 .section_size_L { height:500px;}
+.section_size_S { height:50px; border-radius: 10px; border:2px solid #272727;}
 
-.keyword_list { width: 24%; height:40px; text-align: center; line-height: 40px; font-size:1.2rem; font-weight: bold; float: left; margin:2px; border-radius: 5px; border:0.5px solid #272727;  background-color: white;}
 
-.emo_bar { width:calc(100% - 20px); height:30px; border-radius: 5px; margin-bottom: 10px;
-    .good { float:left; background-color: #2E64FE; text-align: center; line-height: 30px; color:white; font-size: 1rem; border-top-left-radius: 5px; border-bottom-left-radius: 5px;}
-    .bad { float:left; background-color: #FE2E2E; text-align: center; line-height: 30px; color:white; font-size: 1rem; border-top-right-radius: 5px; border-bottom-right-radius: 5px;}
+
+.wc_category_list { width:100%; height:50px; background-color: white; list-style: none; margin:0; padding:0;
+    .list_title { width:20%; height:50px; float:left; font-size: 1.1rem; font-weight: bold; text-align: center; line-height: 50px; display: flex; justify-content: center; align-items: center; border:2px solid #272727;
+        .cat_kind_01 { background-color:#272727; width:10px; height:10px; border-radius: 50px; margin:0px 10px 0 10px;}
+        .cat_kind_02 { background-color:#248F57; width:10px; height:10px; border-radius: 50px; margin:0px 10px 0 10px;}
+        .cat_kind_03 { background-color:#DE214D; width:10px; height:10px; border-radius: 50px; margin:0px 10px 0 10px;}
+        .cat_kind_04 { background-color:#FF4000; width:10px; height:10px; border-radius: 50px; margin:0px 10px 0 10px;}
+        .cat_kind_05 { background-color:#073191; width:10px; height:10px; border-radius: 50px; margin:0px 10px 0 10px;}
+    }
+    .list_title:first-child { border-top-left-radius: 10px;}
+    .list_title:last-child { border-top-right-radius: 10px;}
 }
+.wc_display{ width: 100%; height:calc(100% - 60px); margin-top: 10px;
+    .emotion_temp { width:50px; height:100%; float:left; margin-right:10px;
+        .emo_bar { width:100%; height:100%; border-radius: 5px;
+            .good { background-color: #2E64FE; text-align: center; color:white; font-size: 0.9rem; border-top-left-radius: 15px; border-top-right-radius: 15px; display: flex; justify-content: center; align-items: center;}
+            .bad { background-color: #FE2E2E; text-align: center; color:white; font-size: 0.9rem; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; display: flex; justify-content: center; align-items: center;}
+        }
+    }
+    
+    .content_display { width:calc(100% - 70px); height:100%; float:left;
+        .keyword_list { width: 19%; height:40px; text-align: center; line-height: 40px; font-size:0.9rem; font-weight: bold; float: left; margin:2px; border-radius: 5px; border:0.5px solid #272727;  background-color: white;}
+    }
+}
+
+
+    
 //graph_css
 rect { border-radius: 10px !important; }
 .bar_c { border-radius: 10px !important;}
@@ -43,6 +75,6 @@ rect { border-radius: 10px !important; }
 .green { fill: #04B404;}
 .yellow { fill: #F7D358;}
 
-#x_scale {font-family: nanum; font-size:0.8rem;}
-#y_scale {font-family: nanum; font-size:0.8rem;}
+#x_scale {font-family: nanum; font-size:0.9rem;}
+#y_scale {font-family: nanum; font-size:0.9rem;}
 

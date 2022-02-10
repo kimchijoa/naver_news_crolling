@@ -31,11 +31,8 @@ def nmo_run(date) :
     
     #워드 클라우드용으로 제목만 뽑아냄
     result_Title = data_Pre_lable['기사 제목']
-    #워드 클라우드 결과값 매칭을 위한 주제도 뽑아냄
     result_Tag = data_Pre_lable['기사 주제']
-
-    #제목 리스트들을 카테고리 별로 분ㄿ한다.
-    #c_dic_arr_word에는 사회일반, 경제일반, 사건사고, 정치일반 태그를 가진 기사 제목들이 각 위치에 리스트 형태로 저장된다.
+    ##기사 주제, 기사 제목으로 이루어진 dic 배열 생성
     dic_arr = []
     c_dic_arr_word = [[],[],[],[]]
     c_dic_arr = ["사회일반","경제일반","사건사고","정치일반"]
@@ -52,15 +49,23 @@ def nmo_run(date) :
             elif dic_arr[i]["Category"] == c_dic_arr[3]:
                 c_dic_arr_word[3].append(dic_arr[i]["Title"])
 
+    #print(len(dic_arr))
+    #print(len(c_dic_arr_word[0])) #사회일반 키워드
+    #print(len(c_dic_arr_word[1])) #경제일반 키워드
+    #print(len(c_dic_arr_word[2])) #사건사고 키워드
+    #print(len(c_dic_arr_word[3])) #정치일반 키워드
+    #print(c_dic_arr_word[3])
+    #print(len(c_dic_arr_word))
+
+    #정답 저장 배열용
     json_arr = []
     json_emotion_arr = []
-
+    
     for i in range(0, len(c_dic_arr_word)):
         print("====================== Tag Analize [" + c_dic_arr[i] + "]========================")
         #제목만 명사 뽑아내기 + 토큰화
-        #===================================================================================================================
         token_news = nmo.data_token(c_dic_arr_word[i])
-        #2차원 배열 → 1차원 배열로 변환
+        # #2차원 배열 → 1차원 배열로 변환
         token_news = sum(token_news, [])
         #불용어 리스트화
         stop_words = nmo.stop_word('../naver_news_crolling/func/stopwords_Test.txt')
@@ -88,24 +93,35 @@ def nmo_run(date) :
         nmo.check_text(token_news)
         #print("한글자삭제")
         #print(token_news)
-         #사전화 
+        #사전화 
         tmp_dict = nmo.data_nltk_ko(token_news)
         result_key = tmp_dict.keys()
 
         for dic_i in result_key:
-            if tmp_dict[dic_i] > 25:
+            if tmp_dict[dic_i] > 20:
                 json_arr.append({"category":c_dic_arr[i] , "keyword":dic_i, "size":tmp_dict[dic_i]})
+        print(json_arr)
 
-    end = time.process_time()
-    #시간측정
-    #print("wordcloud time:",end - start)
-    #time.sleep(5)
-    emotion_good_cnt = len(data_Good)
-    emotion_bad_cnt = len(data_Bad)
+    # end = time.process_time()
+    # #시간측정
+    # #print("wordcloud time:",end - start)
+    # #time.sleep(5)
+    # result_key = tmp_dict.keys()
+    # json_arr = []
+    # json_emotion_arr = []
 
-    json_emotion_arr.append({"emotion_good_cnt":emotion_good_cnt, "emotion_bad_cnt":emotion_bad_cnt})
+    # for i in result_key:
+    #     if tmp_dict[i] > 30:
+    #         json_arr.append({"category":test , "keyword":i, "size":tmp_dict[i]})
 
-    return json_arr, json_emotion_arr
+
+    # emotion_good_cnt = len(data_Good)
+    # emotion_bad_cnt = len(data_Bad)
+    # json_emotion_arr.append({"emotion_good_cnt":emotion_good_cnt, "emotion_bad_cnt":emotion_bad_cnt})
+
+    # return json_arr, json_emotion_arr
+    print("====================Total===================")
+    print(len(json_arr))
 
 
 
