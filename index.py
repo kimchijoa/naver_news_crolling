@@ -11,32 +11,31 @@ sys.path.append("/naver_news_crolling/func/")
 import xls_controll as xls
 import data_normalization_run as nmo
 
-
-
+#함수명은 상세히 직관적으로 작성한다. 따라 읽으면 한글로 뜻을 이해할정도로
+#api route는 반드시 crolling 으로 시작한다.
+#수집한 데이터를 조회시 data로
+#수집 작업에 대한 데이터 조회시 job으로
+#모든 작업은 명사단위로 쪼갠다.
 app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
     return render_template("index.html")
 
-@app.route('/total_data/date/<date>')
-def select_date(date):
-    return jsonify(mysql.select_yesterday(date))
+@app.route('/crolling/data/data_state/<date>')
+def show_data01(date):
+    return jsonify(mysql.get_news_data_state(date))
+    
+@app.route('/crolling/data/category/count/<date>')
+def show_date02(date):
+    return jsonify(mysql.get_news_data_count_by_category(date))
 
-@app.route('/check_today_status/<date>')
-def show_date(date):
-    return jsonify(mysql.get_yesterday_cron_job(date))
+@app.route('/crolling/job/info/<date>')
+def show_data03(date):
+    return jsonify(mysql.get_crolling_job_data(date))
 
-@app.route('/get_yesterday_crolling_sp_info/<date>')
-def show_c_data(date):
-    return jsonify(mysql.get_yesterday_crolling_sp_info(date))
-
-@app.route('/get_yesterday_crolling_data/<date>')
-def show_c_data_count(date):
-    return jsonify(mysql.get_yesterday_crolling_data(date))
-
-@app.route('/get_yesterday_crolling_data/wordcloud/<date>')
-def show_c_data_wc(date):
+@app.route('/crolling/data/wordcloud/<date>')
+def show_data04(date):
     return jsonify(nmo.nmo_run(date))
 
 

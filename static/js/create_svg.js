@@ -6,7 +6,7 @@ var r_yesterday = yesterday.getFullYear() +
             (yesterday.getMonth() + 1)) + "-" + ((yesterday.getDate()-1) > 9 ? (yesterday.getDate()-1).toString() : "0" + 
             (yesterday.getDate()-1).toString());
             
-var locate = "/get_yesterday_crolling_data/" + r_yesterday;
+var locate = "/crolling/data/category/count/" + r_yesterday;
 $.ajax({ 
     url:locate, 
     type:"GET",
@@ -70,7 +70,7 @@ function draw_rect(data){
     //각 막대별 수치를 삽입
     group.selectAll('text').data(data)
         .enter().append('text').text(d=>d.cnt)
-                                .attr('x', (d,i)=> xscale.bandwidth()/3 + i*xscale.bandwidth())
+                                .attr('x', (d,i)=> xscale.bandwidth()/4 + i*xscale.bandwidth() + xscale.bandwidth()/6)
                                 .attr('y', d=>-1*d.cnt/height_scale -10 );
 
     // y축 추가

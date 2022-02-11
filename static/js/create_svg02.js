@@ -6,7 +6,7 @@ var r_yesterday = yesterday.getFullYear() +
             (yesterday.getMonth() + 1)) + "-" + ((yesterday.getDate()-1) > 9 ? (yesterday.getDate()-1).toString() : "0" + 
             (yesterday.getDate()-1).toString());
             
-var locate = "/get_yesterday_crolling_sp_info/" + r_yesterday;
+var locate = "/crolling/job/info/" + r_yesterday;
 $.ajax({ 
     url:locate, 
     type:"GET",
@@ -52,6 +52,8 @@ function draw_path(data){
         .y((d) => yscale(d.cost_time));
     //막대바, x축, y축 그룹 추가
     var group = svg.append('g');
+    var group_label01 = svg.append('g');
+    var group_label02 = svg.append('g');
     var x_group = svg.append('g').attr('id',"x_scale");
     var y_group = svg.append('g').attr('id',"y_scale");
 
@@ -61,6 +63,11 @@ function draw_path(data){
         .attr('stroke', 'red') // 라인의 색깔 지정
         .attr('stroke-width', 1) // 라인의 굵기 지정
         .attr('d', line);
+
+    group_label01.attr('transform', "translate(" + (s_width-140) + ", 20)");
+    group_label01.append('text').text("MAX : " + d3.max(data, (d) => d.cost_time) + "(s)").attr("font-size", "0.9rem").attr("font-weight","700")
+    group_label02.attr('transform', "translate(" + (s_width-140) + ", 40)");
+    group_label02.append('text').text("AVERAGE : " + Math.round(d3.mean(data, (d) => d.cost_time))  + "(s)").attr("font-size", "0.9rem").attr("font-weight","700")
 
 
     var yAxis = d3.axisLeft()

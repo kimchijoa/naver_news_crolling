@@ -12,7 +12,7 @@ var r_yesterday = yesterday.getFullYear() +
             (yesterday.getMonth() + 1)) + "-" + ((yesterday.getDate()-1) > 9 ? (yesterday.getDate()-1).toString() : "0" + 
             (yesterday.getDate()-1).toString());
             
-var locate = "/get_yesterday_crolling_data/wordcloud/" + r_yesterday;
+var locate = "/crolling/data/wordcloud/" + r_yesterday;
 $.ajax({ 
     url:locate, 
     type:"GET",
@@ -96,8 +96,8 @@ function input_keyword_list(data, emo_data)
     $temp_emotion_loc.append("<div class='emo_bar'></div>");
     var $temp_good =  $('#svg_04').find('.emo_bar').append("<div class='good'>" + good_percent.toFixed(1) + "%"+ "</div>");
     var $temp_bad = $('#svg_04').find('.emo_bar').append("<div class='bad'>" + bad_percent.toFixed(1) + "%" + "</div>");
-    $('#svg_04').find('.good').css("height",good_percent + "%");
-    $('#svg_04').find('.bad').css("height",bad_percent + "%");
+    $('#svg_04').find('.good').css("width",good_percent + "%");
+    $('#svg_04').find('.bad').css("width",bad_percent + "%");
     //카테고리별 키워드 생성
     var $display_cont = $('#svg_04').find('.content_display');
     $display_cont.append("<p class='menu_title_small'>Topic Top 5</p>")

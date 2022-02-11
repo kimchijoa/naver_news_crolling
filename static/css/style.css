@@ -223,8 +223,8 @@ nav {
   margin-top: 10px;
 }
 .wc_display .emotion_temp {
-  width: 50px;
-  height: 100%;
+  width: 100%;
+  height: 30px;
   float: left;
   margin-right: 10px;
 }
@@ -238,26 +238,30 @@ nav {
   text-align: center;
   color: white;
   font-size: 0.9rem;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
+  height: 30px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
+  float: left;
 }
 .wc_display .emotion_temp .emo_bar .bad {
   background-color: #FE2E2E;
   text-align: center;
   color: white;
   font-size: 0.9rem;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+  height: 30px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
+  float: left;
 }
 .wc_display .content_display {
-  width: calc(100% - 70px);
-  height: 100%;
+  width: 100%;
+  height: calc(100% - 70px);
   float: left;
 }
 .wc_display .content_display .keyword_list {
@@ -270,7 +274,7 @@ nav {
   float: left;
   margin: 2px;
   border-radius: 5px;
-  border: 0.5px solid #272727;
+  border: 2px solid #272727;
   background-color: white;
 }
 
