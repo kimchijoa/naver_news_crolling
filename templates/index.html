@@ -54,38 +54,23 @@
         <div class="section_wrap section_size_L" id="crolling_state">
             <div class="content">
                 <p id="menu_title">WordCloud Keyword</p>    
-                <div id="svg_03" class="graph_content">
-                    <img src="/static/img/content_loading.gif">
-                </div>
+                <div id="svg_03" class="graph_content"></div>
             </div>
 
             <div class="content ">
-                <p id="menu_title">Topic Keyword</p>    
+                <p id="menu_title">Topic</p>    
                 <div id="svg_04" class="graph_content">
                     <ul class="wc_category_list">
-                        <li class="list_title"><p class="cat_kind_01"></p>종합</li>
-                        <li class="list_title"><p class="cat_kind_02"></p>사회</li>
-                        <li class="list_title"><p class="cat_kind_03"></p>사건</li>
-                        <li class="list_title"><p class="cat_kind_04"></p>경제</li>
-                        <li class="list_title"><p class="cat_kind_05"></p>정치</li>
+                        <li class="list_title" onclick="load_wordcloud_all()"><p class="cat_kind_01"></p>종합</li>
+                        <li class="list_title" onclick="load_wordcloud(1)"><p class="cat_kind_02"></p>사회</li>
+                        <li class="list_title" onclick="load_wordcloud(2)"><p class="cat_kind_03"></p>사건</li>
+                        <li class="list_title" onclick="load_wordcloud(3)"><p class="cat_kind_04"></p>경제</li>
+                        <li class="list_title" onclick="load_wordcloud(4)"><p class="cat_kind_05"></p>정치</li>
                     </ul>
                     <div class="wc_display">
-                        <div class="content_display">
-                        <p class="menu_title_small">Top 5 News</p>
-                        <p class="top_news_list">[카테고리] 거제시 코로나19 맞춤형 방역재택치료 체계 구축</p>
-                        <p class="top_news_list">[카테고리] 순창군 코로나19 백신 미접종자 "노바백스 백신 접종하세요"</p>
-                        <p class="top_news_list">[카테고리] 완주군, 축산 악취 개선 설비 지원…21억원 투입</p>
-                        <p class="top_news_list">[카테고리] "포스코지주사 포항으로 이전하라"…포항시민 서명운동</p>
-                        <p class="top_news_list">[카테고리] 이재명 "野후보 '보복정치' 발언 걱정들 많아‥블랙리스트 용납 안해"</p>
-                        </div>
-                        <p class="menu_title_small">Emotion Percent</p>
-                        <div class="emotion_temp"></div>
+                        <div class="content_display"></div>
                     </div>
                     
-
-                    <!-- <img src="/static/img/content_loading.gif"> -->
-
-
                 </div>
             </div>
         </div>
@@ -98,6 +83,7 @@
 </body>
 <script src="{{ url_for('static', filename='js/create_svg.js') }}"></script>
 <script src="{{ url_for('static', filename='js/create_svg03.js') }}"></script>
+<script src="{{ url_for('static', filename='js/create_svg04_by_wc.js') }}"></script>
 <script src="{{ url_for('static', filename='js/create_svg02.js') }}"></script>
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 

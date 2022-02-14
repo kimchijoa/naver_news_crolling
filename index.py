@@ -38,6 +38,12 @@ def show_data03(date):
 def show_data04(date):
     return jsonify(nmo.nmo_run(date))
 
+@app.route('/crolling/data/wordcloud/<category>/<date>')
+def show_data05(category, date):
+    return jsonify(nmo.nmo_run_by_category(category, date))
+
+
+
 
 
 

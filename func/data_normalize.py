@@ -124,6 +124,19 @@ def data_Bad(data) :
     #data_Bad.to_excel('data_Bad.xlsx')
     return data_Bad
 
+def data_emotion_test(data, category) :
+    c_dic_arr = ["사회 일반","사건사고","경제 일반","정치일반"]
+    category_w = c_dic_arr[int(category)-1]
+    b_label_filter = data['lable'] == 0
+    g_label_filter = data['lable'] == 1
+    category_filter = data['기사 주제'] == category_w
+    data_Bad = data[b_label_filter & category_filter]
+    data_Bad = data_Bad.reset_index(drop=True) #index reset
+    data_Good = data[g_label_filter & category_filter]
+    data_Good = data_Good.reset_index(drop=True) #index reset
+    #data_Bad.to_excel('data_Bad.xlsx')
+    return data_Good, data_Bad
+
 #불용어 리스트화
 def stop_word(stop_file_name) :
     with open(stop_file_name, 'r', encoding='UTF8') as f:

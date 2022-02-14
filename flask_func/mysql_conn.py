@@ -60,6 +60,18 @@ def get_news_data_state(date):
     local_news_row_cnt = {"local_news_cnt": xls.load_local_total_news_info(date)}
     return db_news_row_cnt, local_news_row_cnt, db_s3_info
 
+#[특정날짜] 크롤링 작업 정보 데이터를 리턴함
+def get_crolling_job_data(date):
+    sql_cursor, conn = create_conn()
+    #sql = "SELECT idx, cost_time FROM crolling_speed_info WHERE update_date=" + "'" + date  + "';"
+    sql = "SELECT @rownum := @rownum+1 AS RNUM , cost_time FROM crolling_speed_info, (SELECT @rownum := 0) R WHERE update_date=" + "'" +  date + "';"
+    cursor = conn.cursor(mysql.cursors.DictCursor)
+    cursor.execute(sql)
+    result = cursor.fetchall()
+    cursor.close()
+ 
+    return result
+
 #[특정날짜] 뉴스데이터를 카테고리별로 정렬하여 갯수만 리턴
 def get_news_data_count_by_category(date):
     sql_cursor, conn = create_conn()
@@ -78,18 +90,6 @@ def get_news_data_count_by_category(date):
     json_arr.append({"category":"정치일반", "cnt" : result[0]['c_p_normal']})
     
     return json_arr
-
-#[특정날짜] 크롤링 작업 정보 데이터를 리턴함
-def get_crolling_job_data(date):
-    sql_cursor, conn = create_conn()
-    #sql = "SELECT idx, cost_time FROM crolling_speed_info WHERE update_date=" + "'" + date  + "';"
-    sql = "SELECT @rownum := @rownum+1 AS RNUM , cost_time FROM crolling_speed_info, (SELECT @rownum := 0) R WHERE update_date=" + "'" +  date + "';"
-    cursor = conn.cursor(mysql.cursors.DictCursor)
-    cursor.execute(sql)
-    result = cursor.fetchall()
-    cursor.close()
- 
-    return result
 
 create_conn()
 

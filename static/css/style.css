@@ -62,7 +62,8 @@ nav {
 
 .menu_title_small {
   font-size: 1.1rem;
-  font-weight: bold;
+  width: 100%;
+  font-weight: 800;
 }
 
 .section_wrap {
@@ -222,18 +223,62 @@ nav {
   height: calc(100% - 60px);
   margin-top: 10px;
 }
-.wc_display .emotion_temp {
+.wc_display .content_display {
+  width: 100%;
+  height: 100%;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+}
+.wc_display .content_display .keyword {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+.wc_display .content_display .keyword .keyword_list {
+  flex: 1;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  float: left;
+  margin: 2px 5px 2px 5px;
+  border-radius: 5px;
+  border: 2px solid #272727;
+  background-color: white;
+}
+.wc_display .content_display .keyword .keyword_list:first-child {
+  margin-left: 0px;
+}
+.wc_display .content_display .keyword .keyword_list:last-child {
+  margin-right: 0px;
+}
+.wc_display .content_display .top5_news_list {
+  width: 100%;
+}
+.wc_display .content_display .top5_news_list .n_list {
   width: 100%;
   height: 30px;
-  float: left;
-  margin-right: 10px;
+  font-size: 1rem;
+  line-height: 30px;
 }
-.wc_display .emotion_temp .emo_bar {
+.wc_display .content_display .emotion_temp {
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+.wc_display .content_display .emotion_temp .emo_bar {
   width: 100%;
   height: 100%;
   border-radius: 5px;
 }
-.wc_display .emotion_temp .emo_bar .good {
+.wc_display .content_display .emotion_temp .emo_bar .good {
   background-color: #2E64FE;
   text-align: center;
   color: white;
@@ -246,7 +291,7 @@ nav {
   align-items: center;
   float: left;
 }
-.wc_display .emotion_temp .emo_bar .bad {
+.wc_display .content_display .emotion_temp .emo_bar .bad {
   background-color: #FE2E2E;
   text-align: center;
   color: white;
@@ -258,24 +303,6 @@ nav {
   justify-content: center;
   align-items: center;
   float: left;
-}
-.wc_display .content_display {
-  width: 100%;
-  height: calc(100% - 70px);
-  float: left;
-}
-.wc_display .content_display .keyword_list {
-  width: 19%;
-  height: 40px;
-  text-align: center;
-  line-height: 40px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  float: left;
-  margin: 2px;
-  border-radius: 5px;
-  border: 2px solid #272727;
-  background-color: white;
 }
 
 rect {

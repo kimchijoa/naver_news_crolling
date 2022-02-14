@@ -1,7 +1,5 @@
-//최초 로드시 무조건 전체 호출 한번
-load_wordcloud_all();
-
-function load_wordcloud_all(){
+function load_wordcloud(category)
+{
     var data = [];
     //var fill_color = ["#248F57","#FF4000","#DE214D","#073191","#A1B4E0"];
     var fill_color = [{"사회일반":"#248F57", "사건사고":"#DE214D","경제일반":"#FF4000", "정치일반":"#073191"}];
@@ -23,7 +21,7 @@ function load_wordcloud_all(){
     $topic_display.empty();
     $topic_display.append("<img src='/static/img/content_loading.gif'>");
                 
-    var locate = "/crolling/data/wordcloud/" + r_yesterday;
+    var locate = "/crolling/data/wordcloud/" + category + "/" + r_yesterday;
     $.ajax({ 
         url:locate, 
         type:"GET",
@@ -40,11 +38,10 @@ function load_wordcloud_all(){
                 //$("#svg_04").empty();
                 data = result[0];
                 emo_data = result[1];
-                top5_news_list = result[2];
                 console.log(data);
                 console.log(data[0].category)
                 console.log(emo_data);
-                console.log(top5_news_list);
+                top5_news_list = result[2];
                 draw_wordcloud(data);
                 input_keyword_list(data, emo_data, top5_news_list);
 
@@ -73,7 +70,7 @@ function load_wordcloud_all(){
         var size_percent = d3.max(data, (d) => d.size);
         var layout = d3.layout.cloud().size([s_width-10, s_height-10])
             .words(data.map(function(d) { return {text: d.keyword, size:d.size, category:d.category}; }))
-            .padding(4)        //space between words
+            .padding(3)        //space between words
             .rotate(0)
             //.fontSize((d) => d.size/size_percent*60 > 17 ?  d.size/size_percent*100 : 17)      // 원본값
             .fontSize((d) => d.size/size_percent*60 > 17 ?  d.size/size_percent*60 : 17)      // font size of words
@@ -120,7 +117,6 @@ function load_wordcloud_all(){
             $display_keyword.append("<div class='keyword_list'>[#" + num + "]" + key_word + " : " + key_word_size +"건 </div>");
         }
 
-        //카테고리별 top5 news 리스트 생성
         var $display_news = $('#svg_04').find('.content_display').find(".top5_news_list");
         for(var i=0; i < 5; i++)
         {
@@ -140,7 +136,6 @@ function load_wordcloud_all(){
         $('#svg_04').find('.bad').css("width",bad_percent + "%");
 
     }
-
 }
 
 
