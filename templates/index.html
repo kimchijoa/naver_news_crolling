@@ -61,11 +61,11 @@
                 <p id="menu_title">Topic</p>    
                 <div id="svg_04" class="graph_content">
                     <ul class="wc_category_list">
-                        <li class="list_title" onclick="load_wordcloud_all()"><p class="cat_kind_01"></p>종합</li>
-                        <li class="list_title" onclick="load_wordcloud(1)"><p class="cat_kind_02"></p>사회</li>
-                        <li class="list_title" onclick="load_wordcloud(2)"><p class="cat_kind_03"></p>사건</li>
-                        <li class="list_title" onclick="load_wordcloud(3)"><p class="cat_kind_04"></p>경제</li>
-                        <li class="list_title" onclick="load_wordcloud(4)"><p class="cat_kind_05"></p>정치</li>
+                        <li class="list_title" onclick="load_wordcloud('none')"><p class="cat_kind_01"></p>종합</li>
+                        <li class="list_title" onclick="load_wordcloud('c1')"><p class="cat_kind_02"></p>사회</li>
+                        <li class="list_title" onclick="load_wordcloud('c2')"><p class="cat_kind_03"></p>사건</li>
+                        <li class="list_title" onclick="load_wordcloud('c3')"><p class="cat_kind_04"></p>경제</li>
+                        <li class="list_title" onclick="load_wordcloud('c4')"><p class="cat_kind_05"></p>정치</li>
                     </ul>
                     <div class="wc_display">
                         <div class="content_display"></div>
@@ -83,7 +83,6 @@
 </body>
 <script src="{{ url_for('static', filename='js/create_svg.js') }}"></script>
 <script src="{{ url_for('static', filename='js/create_svg03.js') }}"></script>
-<script src="{{ url_for('static', filename='js/create_svg04_by_wc.js') }}"></script>
 <script src="{{ url_for('static', filename='js/create_svg02.js') }}"></script>
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 

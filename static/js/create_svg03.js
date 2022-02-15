@@ -1,7 +1,7 @@
 //최초 로드시 무조건 전체 호출 한번
-load_wordcloud_all();
+load_wordcloud('none');
 
-function load_wordcloud_all(){
+function load_wordcloud(category){
     var data = [];
     //var fill_color = ["#248F57","#FF4000","#DE214D","#073191","#A1B4E0"];
     var fill_color = [{"사회일반":"#248F57", "사건사고":"#DE214D","경제일반":"#FF4000", "정치일반":"#073191"}];
@@ -23,7 +23,7 @@ function load_wordcloud_all(){
     $topic_display.empty();
     $topic_display.append("<img src='/static/img/content_loading.gif'>");
                 
-    var locate = "/crolling/data/wordcloud/" + r_yesterday;
+    var locate = "/crolling/data/wordcloud/" + category + "/" + r_yesterday;
     $.ajax({ 
         url:locate, 
         type:"GET",
@@ -39,10 +39,9 @@ function load_wordcloud_all(){
                 $(".content_display").append("<div class='emotion_temp'></div>");
                 //$("#svg_04").empty();
                 data = result[0];
-                emo_data = result[1];
-                top5_news_list = result[2];
+                top5_news_list = result[1];
+                emo_data = result[2];
                 console.log(data);
-                console.log(data[0].category)
                 console.log(emo_data);
                 console.log(top5_news_list);
                 draw_wordcloud(data);
@@ -70,9 +69,9 @@ function load_wordcloud_all(){
 
         var s_width = $("#svg_03").width();
         var s_height = $("#svg_03").height();
-        var size_percent = d3.max(data, (d) => d.size);
+        var size_percent = d3.max(data, (d) => d.count);
         var layout = d3.layout.cloud().size([s_width-10, s_height-10])
-            .words(data.map(function(d) { return {text: d.keyword, size:d.size, category:d.category}; }))
+            .words(data.map(function(d) { return {text: d.keyword, size:d.count, category:d.n_category}; }))
             .padding(4)        //space between words
             .rotate(0)
             //.fontSize((d) => d.size/size_percent*60 > 17 ?  d.size/size_percent*100 : 17)      // 원본값
@@ -101,21 +100,21 @@ function load_wordcloud_all(){
 
     function input_keyword_list(data, emo_data, top5_news_list)
     {
-        $("#svg_04").css("display","block");
-        p_width = $("#svg_04").width();
-        p_height = $("#svg_04").width();
-        var good_cnt = emo_data[0].emotion_good_cnt;  //긍정 count 건
-        var bad_cnt = emo_data[0].emotion_bad_cnt;  //부정 count 건
-        var total_cnt = good_cnt + bad_cnt;
-        var good_percent = (good_cnt/total_cnt)*100;
-        var bad_percent = (bad_cnt/total_cnt)*100;
+        // $("#svg_04").css("display","block");
+        // p_width = $("#svg_04").width();
+        // p_height = $("#svg_04").width();
+        // var good_cnt = emo_data[0].emotion_good_cnt;  //긍정 count 건
+        // var bad_cnt = emo_data[0].emotion_bad_cnt;  //부정 count 건
+        // var total_cnt = good_cnt + bad_cnt;
+        // var good_percent = (good_cnt/total_cnt)*100;
+        // var bad_percent = (bad_cnt/total_cnt)*100;
 
         //카테고리별 키워드 생성
         var $display_keyword = $('#svg_04').find('.content_display').find(".keyword");
         for(var i=0; i < 5; i++)
         {
             var key_word = data[i].keyword;
-            var key_word_size = data[i].size;
+            var key_word_size = data[i].count;
             var num = i+1
             $display_keyword.append("<div class='keyword_list'>[#" + num + "]" + key_word + " : " + key_word_size +"건 </div>");
         }
@@ -124,20 +123,20 @@ function load_wordcloud_all(){
         var $display_news = $('#svg_04').find('.content_display').find(".top5_news_list");
         for(var i=0; i < 5; i++)
         {
-            var category = top5_news_list[i].category;
+            var category = top5_news_list[i].n_category;
             var title = top5_news_list[i].n_title;
             var e_sum = top5_news_list[i].e_sum;
             $display_news.append("<div class='n_list'>[" + category + "]" + title + " // 감정합계 : " + e_sum +"</div>");
         }
 
         //감정 온도계 생성
-        var $temp_emotion_loc = $('#svg_04').find('.emotion_temp');
-        $temp_emotion_loc.append("<p class='menu_title_small'>Emotion</p>");
-        $temp_emotion_loc.append("<div class='emo_bar'></div>");
-        var $temp_good =  $('#svg_04').find('.emo_bar').append("<div class='good'>" + good_percent.toFixed(1) + "% ( "+ good_cnt + " )</div>");
-        var $temp_bad = $('#svg_04').find('.emo_bar').append("<div class='bad'>" + bad_percent.toFixed(1) + "% ( "+ bad_cnt + " )</div>");
-        $('#svg_04').find('.good').css("width",good_percent + "%");
-        $('#svg_04').find('.bad').css("width",bad_percent + "%");
+        // var $temp_emotion_loc = $('#svg_04').find('.emotion_temp');
+        // $temp_emotion_loc.append("<p class='menu_title_small'>Emotion</p>");
+        // $temp_emotion_loc.append("<div class='emo_bar'></div>");
+        // var $temp_good =  $('#svg_04').find('.emo_bar').append("<div class='good'>" + good_percent.toFixed(1) + "% ( "+ good_cnt + " )</div>");
+        // var $temp_bad = $('#svg_04').find('.emo_bar').append("<div class='bad'>" + bad_percent.toFixed(1) + "% ( "+ bad_cnt + " )</div>");
+        // $('#svg_04').find('.good').css("width",good_percent + "%");
+        // $('#svg_04').find('.bad').css("width",bad_percent + "%");
 
     }
 

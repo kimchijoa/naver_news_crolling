@@ -91,5 +91,38 @@ def get_news_data_count_by_category(date):
     
     return json_arr
 
+def get_keyword_data(date, category):
+    category_num_origin = [{"c1":"사회 일반","c2":"사건사고","c3":"경제 일반","c4":"정치일반"}]
+    
+    if(category =="none"):
+        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "' AND count >= 20 ORDER BY count DESC;"
+        sql02 ="SELECT n_category, n_title, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' ORDER BY e_sum DESC limit 5;"
+    elif(category =="c2"):
+        category_re = category_num_origin[0][category].replace(" ","")
+        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "'AND n_category='" + category_re + "' ORDER BY count DESC;"
+        sql02 ="SELECT n_category, n_title, n_link, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' AND n_category='" + category_num_origin[0][category] + "'ORDER BY e_sum DESC limit 5;"
+        
+    elif(category =="c3"):
+        category_re = category_num_origin[0][category].replace(" ","")
+        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "'AND n_category='" + category_re + "' ORDER BY count DESC;"
+        sql02 ="SELECT n_category, n_title, n_link, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' AND n_category='" + category_num_origin[0][category] + "'ORDER BY e_sum DESC limit 5;"
+    else:
+        category_re = category_num_origin[0][category].replace(" ","")
+        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "'AND n_category='" + category_re + "' AND count >= 15 ORDER BY count DESC;"
+        sql02 ="SELECT n_category, n_title, n_link, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' AND n_category='" + category_num_origin[0][category] + "'ORDER BY e_sum DESC limit 5;"
+
+    sql_cursor, conn = create_conn()
+    
+    cursor = conn.cursor(mysql.cursors.DictCursor)
+    cursor.execute(sql01)
+    result = cursor.fetchall()
+
+    
+    cursor.execute(sql02)
+    top5_news = cursor.fetchall()
+    cursor.close()
+ 
+    return result, top5_news
+
 create_conn()
 

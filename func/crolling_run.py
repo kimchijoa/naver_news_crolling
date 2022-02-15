@@ -102,6 +102,11 @@ def main_process():
     sql_cursor, conn = m_sql.create_conn()
     m_sql.crolling_speed_info(conn, sql_cursor, "today_crolling_speed", folder_name + graph_info_file, use_date )
 
+    time.sleep(2)
+    #수집한 단어 카테고리 별로 나누어 키워드 화
+    sql_cursor, conn = m_sql.create_conn()
+    m_sql.news_keyword(conn, sql_cursor, use_date)
+
     #크롤링 소요 시간 출력
     print(times)
 

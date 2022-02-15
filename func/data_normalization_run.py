@@ -80,8 +80,7 @@ def nmo_run(date) :
         result_key = tmp_dict.keys()
 
         for dic_i in result_key:
-            if tmp_dict[dic_i] > 25:
-                json_arr.append({"category":c_dic_arr[i] , "keyword":dic_i, "size":tmp_dict[dic_i]})
+            json_arr.append({"category":c_dic_arr[i] , "keyword":dic_i, "size":tmp_dict[dic_i]})
 
     emotion_good_cnt = len(data_Good)
     emotion_bad_cnt = len(data_Bad)
@@ -96,8 +95,7 @@ def nmo_run(date) :
     #result = json.dumps(cursor.fetchall())
     top5_news = cursor.fetchall()
     cursor.close()
-
-    print(top5_news)
+    # print(top5_news)
     for i in range(0, len(top5_news)):
         json_news_list.append({"category":top5_news[i]["n_category"].replace(" ",""), "n_title":top5_news[i]["n_title"], "e_sum":top5_news[i]["e_sum"]})
 
