@@ -97,19 +97,12 @@ def get_keyword_data(date, category):
     if(category =="none"):
         sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "' AND count >= 20 ORDER BY count DESC;"
         sql02 ="SELECT n_category, n_title, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' ORDER BY e_sum DESC limit 5;"
-    elif(category =="c2"):
-        category_re = category_num_origin[0][category].replace(" ","")
-        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "'AND n_category='" + category_re + "' ORDER BY count DESC;"
-        sql02 ="SELECT n_category, n_title, n_link, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' AND n_category='" + category_num_origin[0][category] + "'ORDER BY e_sum DESC limit 5;"
-        
-    elif(category =="c3"):
-        category_re = category_num_origin[0][category].replace(" ","")
-        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "'AND n_category='" + category_re + "' ORDER BY count DESC;"
-        sql02 ="SELECT n_category, n_title, n_link, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' AND n_category='" + category_num_origin[0][category] + "'ORDER BY e_sum DESC limit 5;"
+        sql03 = "SELECT SUM(e_good) as e_good, SUM(e_bad) as e_bad FROM news_emotion_count WHERE update_date='" + date + "';"
     else:
         category_re = category_num_origin[0][category].replace(" ","")
-        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "'AND n_category='" + category_re + "' AND count >= 15 ORDER BY count DESC;"
+        sql01 = "SELECT n_category, keyword, count FROM news_keyword WHERE update_date=" + "'" +  date + "'AND n_category='" + category_re + "' ORDER BY count DESC;"
         sql02 ="SELECT n_category, n_title, n_link, (n_e_like + n_e_good + n_e_sad + n_e_angry + n_e_expect) AS e_sum FROM today_news_data where news_date='" + date + "' AND n_category='" + category_num_origin[0][category] + "'ORDER BY e_sum DESC limit 5;"
+        sql03 = "SELECT e_good, e_bad FROM news_emotion_count WHERE update_date='" + date + "' AND n_category='" + category_re +"';"
 
     sql_cursor, conn = create_conn()
     
@@ -120,9 +113,12 @@ def get_keyword_data(date, category):
     
     cursor.execute(sql02)
     top5_news = cursor.fetchall()
+
+    cursor.execute(sql03)
+    emotion = cursor.fetchall()
     cursor.close()
  
-    return result, top5_news
+    return result, top5_news, emotion
 
 create_conn()
 

@@ -36,11 +36,11 @@ function draw_rect(data){
     var s_width = $("#svg_01").width();
     var s_height = $("#svg_01").height();
     //막대 그래프의 높이 비율을 조정한다.
-    var height_scale =  (d3.max(data, (d) => d.cnt) + 500) / (s_height -40);
+    var height_scale =  (d3.max(data, (d) => d.cnt) + 1000) / (s_height -40);
 
     //y축 정보 추가
     var yscale = d3.scaleLinear()
-        .domain([0, d3.max(data, (d) => d.cnt) + 500]) //실제값의 범위
+        .domain([0, d3.max(data, (d) => d.cnt) + 1000]) //실제값의 범위
         .range([s_height-40, 0]); //변환할 값의 범위(역으로 처리했음!), 위아래 패딩 20을 줬다!
         
 
