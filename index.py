@@ -19,8 +19,12 @@ import data_normalization_run as nmo
 app = Flask(__name__)
 
 @app.route('/')
-def hello_world():
+def index():
     return render_template("index.html")
+
+@app.route('/client')
+def client():
+    return render_template("client.html")
 
 @app.route('/crolling/data/data_state/<date>')
 def show_data01(date):

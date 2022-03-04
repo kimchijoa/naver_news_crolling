@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>오늘의 기분</title>
+        <!-- <link rel="stylesheet" href="index_m.css">
+        <link rel="stylesheet" href="index02.css"> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index_m.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/index02.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="crossorigin="anonymous"></script>
+        <!-- <script type="text/javascript" src="./jquery.cookie.js"></script> -->
+        <link rel="stylesheet" href="{{ url_for('static', filename='js/jquery.cookie.js') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='js/client.js') }}">
+        
+    </head>
+
+    <body>
+        <!-- header -->
+        <div id="header">
+            <nav>
+                <div class="logo">
+                    오늘의<span>기분</span>
+                </div>
+                
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li>관리자</li>
+                    <li>공지사항</li>
+                </ul>
+            </nav>
+            
+        </div>
+        <!-- header -->
+
+        
+
+        <!-- content -->
+
+        <div id="content">
+            <!--공지사항 노출 -->
+            <div id="notice">이 페이지는 Chrome에 최적화 되어 있어요!
+                <div class="notice_close">x</div>
+            </div>
+            <!--공지사항 노출 -->
+
+            <div id="hello_content">
+                <div id="left_side">
+                    <div class="top_menu" onclick="fnMove('m0','top')">▲</div>
+                    <div class="side_menu m1" onclick="fnMove('m1','menu01')">감정</div>
+                    <div class="side_menu m2" onclick="fnMove('m2','menu02')">날씨</div>
+                    <div class="side_menu m3" onclick="fnMove('m3','menu03')">코로나</div>
+                    <div class="side_menu m4" onclick="fnMove('m4','menu04')">키워드</div>
+                </div>
+
+                <div class="hello_comment01">
+                오늘의 하루는 어떤 감정들이 많을까요?</br>
+                저희와 같이 오늘의 감정들을 정리해봐요
+                </div>
+
+                <div class="hello_comment02">
+                오늘의 기분은 뉴스 데이터 분석을 통해 구독자들의 감정을 정리하여 표시해줍니다.</br>
+                뉴스 정보 뿐만아니라 그날의 감정, 날씨 등 하루를 정리해볼수있는 정보를 얻어보세요.</br>
+                분석사이트 : MBC뉴스 , 네이버 뉴스
+                </div>
+            </div>
+
+            
+        
+            <!-- <p class="content_title">오늘의 <span>정보</span></p> -->
+
+            <div class="section sec01">
+
+                <div class="emotion_block">
+                    <div class="emotion_title">오늘의 감정</div>
+                    <img src="img/angry.png" />
+                    <div class="explain">오늘 대부분 화가 났어요 (64%)</div>
+                </div>
+
+
+
+                <div class="emotion_block today_weather">
+                    <div class="emotion_title">오늘의 날씨</div>
+                    <!-- <img src="img/weather.png" /> -->
+                    <div class="explain">정보를 불러오고있어요...</div>
+                </div>
+
+                <div class="emotion_block">
+                    <div class="emotion_title">오늘의 코로나</div>
+                    <img src="img/corona.png" />
+                    <div class="explain">오늘의 총 감염자는 n 명이에요</div>
+                </div>
+
+                <div class="emotion_block today_keyword">
+                    <div class="emotion_title">오늘의 키워드</div>
+                    <ul>
+                        <li>#1순위</li>
+                        <li>#2순위</li>
+                        <li>#3순위</li>
+                        <li>#4순위</li>
+                        <li>#5순위</li>
+                    </ul>
+                    
+                </div>
+
+            </div>
+
+            <!-- ======================= asdf ============================== -->
+
+            <p class="content_title">오늘의 <span>감정</span></p>
+            <div id="menu01" class="section sec02">
+                <div class="empty_box">오늘의 감정이 표현될 구간</div>
+            </div>
+            <!-- menu01 -->
+
+            <p class="content_title">오늘의 <span>날씨</span></p>
+            <div id="menu02" class="section sec02">
+                <div class="empty_box">오늘의 날씨가 표현될 구간</div>                
+            </div>
+
+            <!-- menu02 -->
+
+            <p class="content_title">오늘의 <span>코로나</span></p>
+            <div id="menu03" class="section sec02">
+                <div class="empty_box">오늘의 코로나 표현될 구간</div>
+            </div>
+
+            <!-- menu03 -->
+
+            <p class="content_title">오늘의 <span>키워드</span></p>
+            <div id="menu04" class="section sec02">
+                <div class="empty_box">오늘의 키워드가 표현될 구간</div>
+                <!-- <div class="inner01">
+                    <div class="category_block">정치</div>
+                    <div class="category_block">사회</div>
+                    <div class="category_block">국제</div>
+                    <div class="category_block">경제·과학</div>
+                    <div class="category_block">스포츠</div>
+                </div>
+
+                <div class="inner02">
+                    <div class="main_news">
+                        <img src="img/main_news.png"/>
+                    </div>
+                    <div class="news_lists">
+                        <div class="list">관련 뉴스1</div>
+                        <div class="list">관련 뉴스2</div>
+                        <div class="list">관련 뉴스3</div>
+                        <div class="list">관련 뉴스4</div>
+                        <div class="list">관련 뉴스5</div>
+                    </div>
+
+                    <div class="news_emotion">
+                            <div class="issue_emotion"><span>이슈에 대한 감정</span>
+                                <img src="img/angry.png"/>
+                            </div>
+
+                            <img src="img/chart_ex.png"/>
+                            
+                            
+                    </div>
+                </div> -->
+                
+            </div>
+            <!-- menu04 -->
+            
+
+        </div>
+        <!-- content -->
+
+        <!-- footer -->
+        <div id="footer">
+            Copyright © 2021 kimchijoa & pingky
+        </div>
+        <!-- footer -->
+    
+    </body>
+</html>

@@ -1,0 +1,159 @@
+@font-face {
+    font-family: 'nanum';
+    src: url('NanumSquareB.ttf') format('truetype');
+}
+
+@media ( min-width: 768px ) {
+    @import url("index_m.css");    
+}
+
+/* =========================================================================================================================================================== */
+
+@media ( min-width: 1400px ) {
+    html, body { margin:0; padding: 0; font-family: 'nanum'; font-size:18px;}
+
+    #header { width:100%; height:100px; text-align: center; top:0; position: fixed; background-color:white; border-bottom: 0.5px solid tomato;}
+
+    #footer { width:100%; height:50px; line-height: 50px; background-color: #272727; text-align: center; color:white; bottom: 0; position: relative; font-size: 0.8rem;}
+
+    #content { width:1200px; margin:0 auto; margin-top:120px;}
+
+    #header nav{ width:1200px;  height:80px;  padding:20px; margin:0 auto;}
+
+    #header nav ul{ width:50%;  height:60px;  float:right; margin:0; padding:0; display:block;}
+
+    #header nav ul li { width:25%; float:left; color:#272727; height:60px; line-height: 60px; list-style: none;}
+
+    #header nav .logo { font-size:1.4rem; width:50%; color:#272727; float:left; height:60px; line-height: 60px; float:left;}
+
+    #header nav .logo span { font-size:1.7rem; color:tomato; font-weight: bold;}
+
+
+
+    #left_side { width:100px; height:300px; float:left; margin-left: -110px; position: fixed;}
+    /* 코드 색상 표 #2E64FE #0174DF #3104B4*/
+    #left_side .side_menu { width:100%; height:100px; background-color:white; color:#0174DF; text-align:center; line-height: 100px; margin-bottom: 5px; border:2px solid #0174DF; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-right:0;}
+
+    #left_side .top_menu {width:100%; height:30px; background-color:white; color:#272727; text-align:center; line-height: 30px; margin-bottom: 5px; border:2px solid tomato; border-top-left-radius: 5px; border-top-right-radius: 5px;  }
+    .no_select_menu { background-color:white; color:#0174DF; text-align:center; line-height: 100px; margin-bottom: 5px; border:2px solid #0174DF;}
+
+    .select_menu { background-color:white; color:tomato !important; text-align:center; line-height: 100px; margin-bottom: 5px; border:2px solid tomato !important; }
+
+    #notice { width:100%; background-color: #FE9A2E; color:white; font-weight: bold; font-size:1rem; text-align: center; height: 50px; line-height: 50px; border-radius:5px; margin-top: 10px; margin-bottom: 10px; }
+
+
+    #notice .notice_close { float:right; margin:10px; width:30px; height:30px; line-height: 30px; text-align: center;}
+
+    .content_title { font-size:1.3rem; text-align: left; padding:0; margin:0; margin-bottom: 10px;}
+
+    .content_title span { color:tomato;}
+
+    #hello_content { width:100%; height:calc(100vh - 430px); background-color:#0174DF; border-radius: 5px; } 
+
+    #hello_content .hello_comment01 {width:80%; color:white; font-size: 2rem; padding:30px; line-height: 150%;}
+
+    #hello_content .hello_comment02 { color:white; padding:30px; line-height: 150%;}
+
+    #menu01, #menu02, #menu03, #menu04 { width:100%; height:calc(100vh - 185px); margin-top:25px; margin-bottom: 40px;}
+
+    .section {
+        width:100%;
+        clear:both;
+        min-height:150px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sec01, .sec02, .sec03 { margin-bottom: 20px; margin-top:20px;}
+
+    .sec01 { width:97%; margin:0 auto; margin-bottom: 30px; margin-top:-200px; z-index: 999; height:270px;}
+
+    .sec01 .emotion_block{
+        flex: 1;
+        text-align: center;
+        /* border:1px solid #D8D8D8; */
+        border-radius: 10px;
+        margin:5px;
+        padding: 10px;
+        height:200px;
+        background-color: white;
+        box-shadow:0 3px 6px rgb(14 30 62 / 8%);
+        
+    }
+
+    .sec01 .emotion_block .emotion_title{
+        width:100%;
+        text-align: center;
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+
+    .sec01 .emotion_block div{
+        width:100%;
+        text-align: center;
+    }
+
+    .sec01 .emotion_block img{
+        width:64px;
+        height:64px;
+    }
+
+    .sec01 .emotion_block .explain{
+        width:100%;
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    .empty_box { display: flex; align-items: center; justify-content: center; font-size: 4rem; height:100%; border-radius: 5px; border: 2px solid tomato;}
+
+    .sec01 .today_weather .temp{ font-size: 1.5rem; line-height: 1.5;}
+
+    .sec01 .today_weather .hum{  }
+
+    .sec01 .today_weather img{ width:100px; height:100px; }
+
+    .sec01 .today_keyword ul { list-style: none; width:100%; margin:0; padding:0;}
+
+    .sec01 .today_keyword ul li{ height:30px; line-height:30px; width:90%; border-bottom: 1px solid #D8D8D8; margin:0 auto;}
+
+    /* ================================================================ */
+
+    .sec02 { flex-direction: column; height:300px;}
+
+    .sec02 .inner01 { display: flex; flex-direction: row;}
+
+    .sec02 .inner01 .category_block {
+        flex: 1;
+        margin:1px;
+        background-color: tomato;
+        height:50px;
+        line-height: 50px;
+        color:white;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .sec02 .inner02 { flex:1; display:flex; margin-top:5px; flex-direction: row; height:250px;}
+
+    .sec02 .inner02 .main_news { flex:1; display: flex; align-items: center; justify-content: center; font-size:1.5rem; background-color: tomato; color:white;}
+
+    .sec02 .inner02 .main_news img{ width:100%; height:100%;}
+
+    .sec02 .inner02 .news_lists { flex:1; display: flex; flex-direction: column;}
+
+    .sec02 .inner02 .news_lists .list{ flex:1;  margin:1px; text-align: left; padding-left:5px; display:flex; align-items: center; padding-left: 7px; font-size: 0.95rem ;}
+
+    .sec02 .inner02 .news_emotion { flex:1; display: flex; flex-direction: column; border-radius: 10px; border:1px solid #D8D8D8; padding:10px;}
+
+    .sec02 .inner02 .news_emotion img{ width:100%; height:calc(100% - 50px);}
+
+    .sec02 .inner02 .news_emotion .issue_emotion { height:40px; }
+
+    .sec02 .inner02 .news_emotion .issue_emotion span{ float:left; font-size: 1.1rem; line-height: 40px; height:40px;}
+
+    .sec02 .inner02 .news_emotion .issue_emotion img{ width:30px; height:30px; float:left; margin-left:5px; margin-top:5px;}
+
+    /* ================================================================ */
+
+    .sec03 { flex-direction: column; height:auto;}
+}
